@@ -1,0 +1,50 @@
+{
+  "manifest_version": 2,
+  "name": "My Extension",
+  "version": "versionString",
+  "default_locale": "en",
+  "description": "A plain text description",
+  "icons": {
+    "16": "images/icon16.png",
+    "48": "images/icon48.png",
+    "128": "images/icon128.png"
+  },
+  "browser_action": {
+    "default_icon": {
+      "19": "images/icon19.png",
+      "38": "images/icon38.png"
+    },
+    "default_title": "Extension Title",
+    "default_popup": "popup.html"
+  },
+  "page_action": {
+    "default_icon": {
+      "19": "images/icon19.png",
+      "38": "images/icon38.png"
+    },
+    "default_title": "Extension Title",
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "scripts": ["background.js"]
+    //"persistent": false 
+    //用于设定扩展是持续后台运行还是按需运行, 默认是true        
+  },
+  // content_script用于在用户浏览的页面中载入对应的js文件和CSS文件
+  // 从而实现对dom的操作
+  "content_scripts": [
+    {
+      "matches": ["http://www.google.com/*"],
+      "css": ["mystyles.css"],
+      "js": ["jquery.js", "myscript.js"]
+    }
+  ],
+  "options_page": "options.html",
+  // permissions代表了你想跨域请求的地址
+  "permissions": [
+    "*://www.google.com/*"
+  ],
+  "web_accessible_resources": [
+    "images/*.png"
+  ]
+}

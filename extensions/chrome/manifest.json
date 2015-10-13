@@ -1,9 +1,8 @@
 {
   "manifest_version": 2,
-  "name": "My Extension",
-  "version": "versionString",
-  "default_locale": "en",
-  "description": "A plain text description",
+  "name": "TagTime",
+  "version": "0.0.1",
+  "description": "A tool that can tag your time when working on github etc.",
   "icons": {
     "16": "images/icon16.png",
     "48": "images/icon48.png",
@@ -12,21 +11,13 @@
   "browser_action": {
     "default_icon": {
       "19": "images/icon19.png",
-      "38": "images/icon38.png"
+      "38": "images/icon38.png"//供retina使用
     },
-    "default_title": "Extension Title",
-    "default_popup": "popup.html"
-  },
-  "page_action": {
-    "default_icon": {
-      "19": "images/icon19.png",
-      "38": "images/icon38.png"
-    },
-    "default_title": "Extension Title",
-    "default_popup": "popup.html"
+    "default_title": "Tag Your Time In Easy Way",
+    "default_popup": "tagtime.html"
   },
   "background": {
-    "scripts": ["background.js"]
+    //"scripts": ["js/background.js"]
     //"persistent": false 
     //用于设定扩展是持续后台运行还是按需运行, 默认是true        
   },
@@ -34,16 +25,21 @@
   // 从而实现对dom的操作
   "content_scripts": [
     {
-      "matches": ["http://www.google.com/*"],
-      "css": ["mystyles.css"],
-      "js": ["jquery.js", "myscript.js"]
+      //"matches": ["https://github.com/*", "https://www.github.com/*"],
+      "matches": ["https://github.com/*/issues", "https://www.github.com/*/issues/*"],
+      "css": ["stylesheets/tag_issues.css"],
+      "js": ["js/jquery.js", "js/tag_issues.js"]
     }
   ],
-  "options_page": "options.html",
+  // options_page用于指定用户点击扩展按钮后是否会出现选项页面
+  //"options_page": "options.html",
   // permissions代表了你想跨域请求的地址
   "permissions": [
-    "*://www.google.com/*"
+    "cookies",
+    "*://www.google.com/*",
+    "notifications" //该属性用于开启桌面提醒功能
   ],
+  //设置桌面提醒能够访问的图片资源
   "web_accessible_resources": [
     "images/*.png"
   ]

@@ -1,7 +1,6 @@
-class IssuesController < ApplicationController
-
+class IssuesController < ApplicationController 
   def index
     @issues = Issue.all
-  end
-
+    render file: 'issues/index.json.jbuilder'
+  end 
 end

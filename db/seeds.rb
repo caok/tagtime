@@ -1,7 +1,5 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
-#   Mayor.create(name: 'Emanuel', city: cities.first)
+# issues
+
+(1..100).each do |no|
+  Issue.create(number: no, spend_hour: [1..3].sample, spend_minutes: [1..60].sample, repo_name: "tagtime", repo_url: "https://github.com/xiongbo/tagtime")
+end

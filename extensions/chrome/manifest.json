@@ -35,12 +35,14 @@
   //"options_page": "options.html",
   // permissions代表了你想跨域请求的地址
   "permissions": [
+    "http://sneezryworks.sinaapp.com/ip.php",
+    "http://localhost:*/*",
     "cookies",
-    "*://www.google.com/*",
     "notifications" //该属性用于开启桌面提醒功能
   ],
   //设置桌面提醒能够访问的图片资源
   "web_accessible_resources": [
     "images/*.png"
-  ]
+  ],
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }

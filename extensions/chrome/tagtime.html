@@ -1,4 +1,9 @@
-<form action="http://localhost:3002/apis/issues" method="POST" >
-  <input type="text" id="input_time" name="tag_time" />
-  <input type="submit"> 
-</form> 
+<div id="tagtime"> 
+  <input type="text" id="input_time" name="tag_time" placeholder="{{timeTip}}" />
+  <input type="submit" v-on="click: createTag"> 
+</div>
+
+<script src="js/jquery.js"></script>
+<script src="js/vue.js" ></script>
+<script src="js/tagtime.js" ></script>
+

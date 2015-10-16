@@ -3,7 +3,8 @@ Rails.application.routes.draw do
 
   resources :issues
 
-  namespace 'apis' do 
+  namespace :apis do 
     get 'issues', to: "issues#index"
+    post 'issues', to: "issues#create"
   end
 end

@@ -52,4 +52,6 @@ var TagIssues = (function($){
   }
 })(jQuery);
 
-TagIssues.init();
+$(document).ready(function(){
+  TagIssues.init();
+})

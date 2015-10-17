@@ -1,7 +1,7 @@
 module Apis
   class IssuesController < BaseController 
     def index 
-      @issues = Issue.all
+      @issues = Issue.all.last(10)
       render file: 'issues/index.json.jbuilder'
     end 
 

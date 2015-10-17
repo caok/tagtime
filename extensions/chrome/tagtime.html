@@ -1,9 +1,12 @@
 <div id="tagtime"> 
   <input type="text" id="input_time" name="tag_time" placeholder="{{timeTip}}" />
+  <label>{{notice}}</label>
   <input type="submit" v-on="click: createTag"> 
+  <ul>
+    <li v-repeat="issue: latestIssues">#{{issue.number}}--{{issue.time}}</li>
+  </ul>
 </div>
 
 <script src="js/jquery.js"></script>
 <script src="js/vue.js" ></script>
-<script src="js/tagtime.js" ></script>
-
+<script src="js/tagtime.js" ></script> 

@@ -17,7 +17,7 @@ var tagTime = new Vue({
       $.ajax({
         type: "POST",
         url: createURL,
-        data: {},
+        data: {tag: "#49:1h:30m"},
         success: function(data){ 
           console.log(data);
           self.notice = data.message;

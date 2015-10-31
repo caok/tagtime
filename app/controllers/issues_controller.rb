@@ -1,6 +1,9 @@
 class IssuesController < ApplicationController 
   def index
     @issues = Issue.all
-    render file: 'issues/index.json.jbuilder'
+    respond_to do |f|
+      f.html 
+      f.json {render json: @issues}
+    end
   end 
 end

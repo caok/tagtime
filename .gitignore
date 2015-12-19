@@ -40,3 +40,7 @@ bower.json
 
 # Ignore application configuration
 /config/application.yml
+
+# Ignore for react
+node_modules/
+app/assets/javascripts/bundle.js

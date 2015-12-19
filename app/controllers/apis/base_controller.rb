@@ -7,7 +7,7 @@ module Apis
     def audit
       # TODO: need to remove `return true` 
       return true
-      unless params[:sign] ==  ips_sign
+      unless params[:sign] == ips_sign
         flash[:error] = "unaccepted sign!"
         respond_to do |format|
           format.html { redirect_to root_url, alert: flash[:error] } 

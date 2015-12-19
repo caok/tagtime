@@ -7,10 +7,22 @@ class Main extends React.Component {
     this.state = { issueList: [] };
   }
   addIssue(issueToAdd) {
-    let newIssueList = this.state.issueList;
-    newIssueList.unshift({ id: Date.now(), name: 'Guest', body: issueToAdd });
-
-    this.setState({ issueList: newIssueList });
+    $.post("/apis/issues", {tag: issueToAdd})
+    .success( savedIssue => {
+      if (savedIssue.type == 'success'){
+        let newIssueList = this.state.issueList;
+        newIssueList.unshift(savedIssue.data);
+        this.setState({ issueList: newIssueList });
+      }else{
+        console.log(savedIssue.message);
+      }
+    })
+    .error(error => console.log(error));
+  }
+  componentDidMount() {
+    $.ajax("/apis/issues")
+    .success(data => this.setState({ issueList: data }))
+    .error(error => console.log(error));
   }
   render() {
     return (

@@ -3,22 +3,27 @@ module Apis
     before_action :break_tag, only: [:create]
 
     def index 
-      @issues = Issue.all.last(10)
+      @issues = Issue.all#.last(10)
       render file: 'issues/index.json.jbuilder'
     end 
 
     def create
-      unless is_correct_tag?
-        render json: { type: "fail", message: "Invalid tagtime format!" } 
-      end
+      #unless is_correct_tag?
+        #render json: { type: "fail", message: "Invalid tagtime format!" } and return
+      #end
 
       tag_params = generate_params
-      issue =  Issue.new(tag_params)
+      if current_user
+        issue = current_user.issues.new(tag_params)
+      else
+        issue =  Issue.new(tag_params)
+      end
 
       if issue.save
-        render json: { type: "success", message: "created new issue tag!" }
+        data = {id: issue.id, name: issue.user_name, body: issue.content}
+        render json: { type: "success", message: "created new issue tag!", data: data } and return
       else
-        render json: { type: "fail", message: "failed to create issue tag!" }
+        render json: { type: "fail", message: "failed to create issue tag!" } and return
       end
     end
 
@@ -26,7 +31,7 @@ module Apis
     attr_reader :tags
 
     def generate_params 
-      ActionController::Parameters.new(number: tags[0], spend_hour: tags[1], spend_minutes: tags[2]).permit!
+      ActionController::Parameters.new(number: tags[0], spend_hour: tags[1], spend_minutes: tags[2], content: tags[3]).permit!
     end
 
     def is_correct_tag?
@@ -40,7 +45,8 @@ module Apis
       number = (ele[0] =~ /#(\d+)/ ? ele[0].match(/#(\d+)/)[1] : nil)
       hours = (ele[1] =~ /(\d+)h/ ? ele[1].match(/(\d+)h/)[1] : nil)
       minutes = (ele[2] =~ /(\d+)m/ ? ele[2].match(/(\d+)m/)[1] : nil) 
-      @tags = [number, hours, minutes]
+      content = params[:tag]
+      @tags = [number, hours, minutes, content]
     end
   end
 end

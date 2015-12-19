@@ -12,6 +12,6 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require vue
-//= require issues
-//= require turbolinks
+//= require react
+//= require react_ujs
+//= require_tree .

@@ -5,7 +5,9 @@ Rails.application.routes.draw do
   root "issues#index"
 
   resources :issues
-  resources :projects
+  resources :projects do
+    post 'assign'
+  end
 
   namespace :apis do 
     get 'issues', to: "issues#index"

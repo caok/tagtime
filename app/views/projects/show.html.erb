@@ -1,5 +1,4 @@
-<p id="notice"><%= notice %></p>
-
+<h1>Project Detail</h1>
 <p>
   <strong>Name:</strong>
   <%= @project.name %>
@@ -20,5 +19,27 @@
   <%= @project.state %>
 </p>
 
+<p>
+  <strong>Members: </strong>
+  <%= @project.users.map(&:email).join(', ') %>
+</p>
+
 <%= link_to 'Edit', edit_project_path(@project) %> |
-<%= link_to 'Back', projects_path %>
+<%= link_to 'Back', mine_profile_path %>
+
+<hr>
+
+<h1>Assign</h1>
+<%= form_for(Participation.new, url: project_assign_path(project_id: @project), method: :post) do |f| %>
+  <div class="field">
+    <%= f.label :user %>
+    <%= f.select :user_id, User.all.collect { |p| [ p.email, p.id ] }, include_blank: true %>
+  </div>
+  <div class="field">
+    <%= f.label :role %>
+    <%= f.select :role, ['participator', 'viewer'] %>
+  </div>
+  <div class="actions">
+    <%= f.submit "Submit" %>
+  </div>
+<% end %>

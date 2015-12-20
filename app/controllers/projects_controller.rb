@@ -43,6 +43,12 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def assign
+    project = Project.find(params[:project_id])
+    Participation.find_or_create_by(user_id: params[:participation][:user_id], project_id: project.id, role: params[:participation][:role])
+    redirect_to project
+  end
+
   def destroy
     @project.close!
     respond_to do |format|
@@ -57,7 +63,7 @@ class ProjectsController < ApplicationController
     end
 
   def project_params
-    params.require(:project).permit(:name, :content, :repo_url)
+    params.require(:project).permit(:name, :content, :repo_url, :state)
   end
 end
 

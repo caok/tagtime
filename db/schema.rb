@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151219081433) do
+ActiveRecord::Schema.define(version: 20151220080605) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,14 +25,27 @@ ActiveRecord::Schema.define(version: 20151219081433) do
     t.text     "content"
     t.integer  "project_id"
     t.integer  "user_id"
+    t.date     "happened_at"
   end
+
+  create_table "participations", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "project_id"
+    t.string   "role"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "participations", ["project_id"], name: "index_participations_on_project_id", using: :btree
+  add_index "participations", ["user_id"], name: "index_participations_on_user_id", using: :btree
 
   create_table "projects", force: :cascade do |t|
     t.string   "name"
     t.text     "content"
     t.string   "repo_url"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.string   "state",      default: "running"
   end
 
   create_table "users", force: :cascade do |t|
@@ -54,4 +67,6 @@ ActiveRecord::Schema.define(version: 20151219081433) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "participations", "projects"
+  add_foreign_key "participations", "users"
 end

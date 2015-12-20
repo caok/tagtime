@@ -21,6 +21,7 @@ gem 'colorbox-rails'
 gem 'kaminari'
 gem 'devise', '3.5.3'
 gem 'react-rails', '~> 1.5.0'
+gem 'aasm'
 
 # Picture manage
 gem 'carrierwave'

@@ -1,11 +1,23 @@
-<header>
-  <% if user_signed_in? %>
-    Welcome <%= link_to current_user.email, mine_profile_path %>,
-    <%= link_to 'logout', destroy_user_session_path, method: 'DELETE' %>
-  <% else %>
-    Please
-    <%= link_to 'login', new_user_session_path %>
-    or
-    <%= link_to 'register', new_user_registration_path %>
-  <% end %>
+<header class="navigation" role="banner">
+  <div class="navigation-wrapper">
+    <%= link_to root_path, class: 'logo' do %>
+      <h2>Tagtime</h2>
+    <% end %>
+    <nav role="navigation">
+      <ul id="js-navigation-menu" class="navigation-menu show">
+        <%#<li class="nav-link"><a href="javascript:void(0)">About Us</a></li>%>
+      </ul>
+    </nav>
+    <div class="navigation-tools">
+      <ul id="js-navigation-menu" class="navigation-menu show">
+        <% if user_signed_in? %>
+          <li class="nav-link"><%= link_to current_user.email, mine_profile_path %></li>
+          <li class="nav-link"><%= link_to 'logout', destroy_user_session_path, method: 'DELETE' %></li>
+        <% else %>
+          <li class="nav-link"><%= link_to 'login', new_user_session_path %></li>
+          <li class="nav-link"><%= link_to 'register', new_user_registration_path %></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
 </header>

@@ -1,0 +1,25 @@
+.wrap {
+  margin: 0 auto;
+  width: 90%;
+  @include media(min-width 1201px, 12) {
+    max-width: 1400px;
+  }
+  @include media(max-width 1200px, 12) {
+    max-width: 1000px;
+  }
+
+  .main {
+    margin: 30px 10px;
+    h1 {
+      font-size: 1.6em;
+    }
+    h2 {
+      font-size: 1.3em;
+    }
+  }
+
+  #login, #register {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+}

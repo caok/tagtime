@@ -1,3 +1,34 @@
-// Place all the styles related to the issues controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+#issues {
+  form.timer {
+    width: 100%;
+    clear: both;
+    input[type='text'] {
+      width: 80%;
+      float: left;
+      margin: 0;
+      font-size: 18px;
+      padding: 15px 18px 16px;
+    }
+    button[type='submit'] {
+      width: 18%;
+      margin-left: 10px;
+      font-size: 19px;
+      padding: 15px 24px 16px;
+      height: 55px;
+    }
+  }
+  .issue_list {
+    margin: 40px 20px;
+    ul {
+      li {
+        font-size: 1.2em;
+        padding: 15px 0;
+        border-bottom: 1px solid #e6e6e6;
+        span.time {
+          float: right;
+          margin: 0 20px;
+        }
+      }
+    }
+  }
+}

@@ -35,7 +35,7 @@ class Main extends React.Component {
 }
 
 let documentReady = () => {
-  let reactNode = document.getElementById('react');
+  let reactNode = document.getElementById('issues');
   if (reactNode) {
     ReactDOM.render(<Main />, reactNode);
   }

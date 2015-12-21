@@ -6,11 +6,12 @@ export default class IssueBox extends React.Component {
   }
   render() {
     return (
-      <div>
-        <form onSubmit={this.sendIssue.bind(this)}>
-          <input type="text" ref='issueArea' />
+      <div className='issue_box'>
+        <form className='timer' onSubmit={this.sendIssue.bind(this)}>
+          <input type="text" ref='issueArea' placeholder='What are you working on?' />
           <button type='submit'>submit</button>
         </form>
+        <div className='clear'></div>
       </div>
     );
   }

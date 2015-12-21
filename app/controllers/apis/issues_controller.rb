@@ -16,7 +16,7 @@ module Apis
       end
 
       if issue.save
-        data = {id: issue.id, name: issue.user_name, body: issue.body}
+        data = {id: issue.id, name: issue.user_name, body: issue.body_without_time, time: issue.spend_time}
         render json: { type: "success", message: "created new issue tag!", data: data } and return
       else
         render json: { type: "fail", message: "failed to create issue tag!" } and return

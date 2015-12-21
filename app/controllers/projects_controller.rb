@@ -7,6 +7,7 @@ class ProjectsController < ApplicationController
   end
 
   def show
+    @issues = @project.issues
   end
 
   def new

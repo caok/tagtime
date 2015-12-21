@@ -1,4 +1,4 @@
-<h1>Listing Projects</h1>
+<h1>My Project List</h1>
 
 <table>
   <thead>
@@ -7,6 +7,7 @@
       <th>Content</th>
       <th>Repo url</th>
       <th>Members</th>
+      <th>Hours</th>
       <th></th>
     </tr>
   </thead>
@@ -18,6 +19,7 @@
         <td><%= project.content %></td>
         <td><%= project.repo_url %></td>
         <td><%= project.users.count %></td>
+        <td><%= project.spend_hours %> h</td>
         <td>
           <%= link_to 'Show', project %>
           <%= link_to 'Edit', edit_project_path(project) %>

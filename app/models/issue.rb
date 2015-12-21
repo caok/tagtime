@@ -31,4 +31,12 @@ class Issue < ActiveRecord::Base
   def body
     "@#{project_name} ##{number}  #{content}  #{spend_hour}h#{spend_minutes}m"
   end
+
+  def body_without_time
+    "@#{project_name} ##{number}  #{content}"
+  end
+
+  def spend_time
+    "#{spend_hour}h#{spend_minutes}m"
+  end
 end

@@ -30,6 +30,10 @@ class Project < ActiveRecord::Base
     end
   end
 
+  def spend_hours
+    (issues.sum(:spend_hour) + (issues.sum(:spend_minutes) || 0)/60.0).round(2)
+  end
+
   before_validation :downcase_name
   def downcase_name
     self.name = name.downcase

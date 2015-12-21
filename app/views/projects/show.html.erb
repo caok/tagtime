@@ -24,8 +24,17 @@
   <%= @project.users.map(&:email).join(', ') %>
 </p>
 
-<%= link_to 'Edit', edit_project_path(@project) %> |
-<%= link_to 'Back', mine_profile_path %>
+<h2>issues</h2>
+<table>
+  <% @issues.each do |issue| %>
+    <tr>
+      <td><%= issue.user_name %></td>
+      <td><%= issue.body_without_time %></td>
+      <td><%= issue.spend_time %></td>
+      <td><%= issue.happened_at %></td>
+    </tr>
+  <% end %>
+</table>
 
 <hr>
 

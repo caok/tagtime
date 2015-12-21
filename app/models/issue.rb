@@ -20,4 +20,12 @@ class Issue < ActiveRecord::Base
   def user_name
     user.try(:email)
   end
+
+  def project_name
+    project.try(:name)
+  end
+
+  def body
+    "@#{project_name} ##{number}  #{content}  #{spend_hour}h#{spend_minutes}m"
+  end
 end

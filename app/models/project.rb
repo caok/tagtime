@@ -16,4 +16,9 @@ class Project < ActiveRecord::Base
       transitions :from => :running, :to => :closed
     end
   end
+
+  before_validation :downcase_name
+  def downcase_name
+    self.name = name.downcase
+  end
 end

@@ -1,12 +1,13 @@
-var createURL = "http://localhost:3002/apis/issues" 
-var indexURL = "http://localhost:3002/apis/issues"
+var createURL = "http://localhost:3000/apis/issues" 
+var indexURL = "http://localhost:3000/apis/issues"
 
 var tagTime = new Vue({
   el: "#tagtime",
   data: {
     timeTip: "time format: 1h30m",
     notice: "",
-    latestIssues: []
+    latestIssues: [],
+    tagContent: ''
   },
   created: function(){
     this.fetchIssue();
@@ -17,10 +18,12 @@ var tagTime = new Vue({
       $.ajax({
         type: "POST",
         url: createURL,
-        data: {tag: "#49:1h:30m"},
+        data: {tag: self.tagContent},
         success: function(data){ 
           console.log(data);
-          self.notice = data.message;
+          //self.notice = data.message;
+          self.latestIssues.unshift(data.data);
+          self.tagContent = '';
         },
         dataType: 'JSON'
       });

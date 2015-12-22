@@ -1,5 +1,5 @@
 var TagIssues = (function($){
-  var ISSUE_API = 'http://localhost:3002/apis/issues' 
+  var ISSUE_API = 'http://localhost:3000/apis/issues' 
 
   var issues, html, regs;
   var cache = {};

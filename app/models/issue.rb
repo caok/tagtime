@@ -33,10 +33,20 @@ class Issue < ActiveRecord::Base
   end
 
   def body_without_time
-    "@#{project_name} ##{number}  #{content}"
+    str = ""
+    str += "@#{project_name} " if project_name.present?
+    str += "##{number}  " if number.present?
+    str += "#{content}"
+
+    str
   end
 
   def spend_time
-    "#{spend_hour}h#{spend_minutes}m"
+    str = ''
+    str += "#{spend_hour}h " if spend_hour > 0
+    str += "#{spend_minutes}m" if spend_minutes > 0
+    str = '0' if str.blank?
+
+    str
   end
 end

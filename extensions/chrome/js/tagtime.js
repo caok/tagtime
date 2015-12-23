@@ -1,6 +1,34 @@
 var createURL = "http://localhost:3000/apis/issues" 
 var indexURL = "http://localhost:3000/apis/issues"
 
+String.prototype.endWith=function(endStr){
+  var d=this.length-endStr.length;
+  return (d>=0&&this.lastIndexOf(endStr)==d)
+}
+
+function init_tag_content(){
+  chrome.tabs.getSelected(function(tab) {
+    console.log(tab.title);
+    title = tab.title;
+    url = tab.url;
+    if (url.indexOf('issues') > 0){
+      if (url.endWith('issues')) {
+        //issue list page
+        project = title.match(/\/\w+$/)[0].replace('/', '');
+        var str = '@' + project + ' ';
+      } else {
+        //issue detail page
+        num = title.match(/Issue #\d /)[0].trim().replace('Issue ', '');
+        project = title.match(/\/\w+$/)[0].replace('/', '');
+        var str = '@' + project + ' ' + num + ' ';
+      }
+    } else {
+      var str = '';
+    }
+    $('#input_time').val(str);
+  });
+};
+
 var tagTime = new Vue({
   el: "#tagtime",
   data: {
@@ -42,3 +70,5 @@ var tagTime = new Vue({
     }
   }
 }); 
+
+init_tag_content();

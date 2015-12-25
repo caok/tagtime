@@ -53,6 +53,14 @@ function init_tag_content(){
   });
 };
 
+function monitor_enter_button(){
+  $('#input_time').bind('keyup', function(event) {
+    if (event.keyCode == "13") {
+      $("input[type='submit']").click();
+    }
+  });
+}
+
 var tagTime = new Vue({
   el: "#tagtime",
   data: {
@@ -67,18 +75,20 @@ var tagTime = new Vue({
   methods: { 
     createTag: function(e){
       var self = this;
-      $.ajax({
-        type: "POST",
-        url: createURL,
-        data: {tag: self.tagContent, token: $.cookie('token')},
-        success: function(data){ 
-          console.log(data);
-          //self.notice = data.message;
-          self.latestIssues.unshift(data.data);
-          self.tagContent = '';
-        },
-        dataType: 'JSON'
-      });
+      if(self.tagContent != ""){
+        $.ajax({
+          type: "POST",
+          url: createURL,
+          data: {tag: self.tagContent, token: $.cookie('token')},
+          success: function(data){ 
+            console.log(data);
+            //self.notice = data.message;
+            self.latestIssues.unshift(data.data);
+            self.tagContent = '';
+          },
+          dataType: 'JSON'
+        });
+      }
     },
     fetchIssue: function(e){
       console.log($.cookie('token'));
@@ -86,7 +96,7 @@ var tagTime = new Vue({
       $.ajax({
         type: "GET",
         url: indexURL,
-        data: {token: $.cookie('token')},
+        data: {token: $.cookie('token'), from: 'plugin'},
         dataType: 'JSON',
         success: function(data){
           console.log(data);
@@ -101,7 +111,6 @@ if(check_login_status()){
   $('#login').hide();
   $('#tagtime').show();
 
-  init_tagtime();
   init_tag_content();
 }else{
   $('#tagtime').hide();
@@ -122,7 +131,7 @@ if(check_login_status()){
           $.ajax({
             type: "GET",
             url: indexURL,
-            data: {token: $.cookie('token')},
+            data: {token: $.cookie('token'), from: 'plugin'},
             dataType: 'JSON',
             success: function(data){
               tagTime.$data.latestIssues = data;
@@ -135,3 +144,4 @@ if(check_login_status()){
     });
   });
 };
+monitor_enter_button();

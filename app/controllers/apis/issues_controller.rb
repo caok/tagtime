@@ -3,7 +3,12 @@ module Apis
     before_action :break_tag, only: [:create]
 
     def index 
-      @issues = @user.issues#.last(10)
+      if params[:from] and params[:from] == 'plugin'
+        @issues = @user.issues.first(10)
+      else
+        @issues = @user.issues.first(20)
+      end
+
       render file: 'issues/index.json.jbuilder'
     end 
 

@@ -1,10 +1,34 @@
-var createURL = "http://localhost:3000/apis/issues" 
-var indexURL = "http://localhost:3000/apis/issues"
+var host = "http://localhost:3000/";
+var createURL = host + "apis/issues";
+var indexURL = host + "apis/issues";
+var loginURL = host + "apis/login";
+var authorizeURL = host + "apis/authorize";
 
 String.prototype.endWith=function(endStr){
   var d=this.length-endStr.length;
   return (d>=0&&this.lastIndexOf(endStr)==d)
 }
+
+function check_login_status() {
+  var result = false;
+  if ($.cookie('token') != undefined){
+    $.ajax({
+      type: "POST",
+      url: authorizeURL,
+      data: {token: $.cookie('token')},
+      dataType: 'JSON',
+      async: false,
+      success: function(rsp){
+        if(rsp.type == 'success'){
+          result = true;
+        }else{
+          $.removeCookie('token', { path: '/' });
+        }
+      }
+    });
+  }
+  return result;
+};
 
 function init_tag_content(){
   chrome.tabs.getSelected(function(tab) {
@@ -46,7 +70,7 @@ var tagTime = new Vue({
       $.ajax({
         type: "POST",
         url: createURL,
-        data: {tag: self.tagContent},
+        data: {tag: self.tagContent, token: $.cookie('token')},
         success: function(data){ 
           console.log(data);
           //self.notice = data.message;
@@ -57,10 +81,12 @@ var tagTime = new Vue({
       });
     },
     fetchIssue: function(e){
+      console.log($.cookie('token'));
       var self = this;
       $.ajax({
         type: "GET",
         url: indexURL,
+        data: {token: $.cookie('token')},
         dataType: 'JSON',
         success: function(data){
           console.log(data);
@@ -71,4 +97,41 @@ var tagTime = new Vue({
   }
 }); 
 
-init_tag_content();
+if(check_login_status()){
+  $('#login').hide();
+  $('#tagtime').show();
+
+  init_tagtime();
+  init_tag_content();
+}else{
+  $('#tagtime').hide();
+  $('#login').show();
+  $('#loginbutton').click(function(){
+    $.ajax({
+      type: "POST",
+      url: loginURL,
+      data: {useremail: $('input#useremail').val(), password: $('input#password').val()},
+      dataType: 'JSON',
+      async: false,
+      success: function(rsp){
+        if(rsp.type == 'success'){
+          $('#login').hide();
+          $('#tagtime').show();
+          init_tag_content();
+          $.cookie('token', rsp.token, { path: '/' });
+          $.ajax({
+            type: "GET",
+            url: indexURL,
+            data: {token: $.cookie('token')},
+            dataType: 'JSON',
+            success: function(data){
+              tagTime.$data.latestIssues = data;
+            }
+          })
+        } else {
+          $('#login .alert').html(rsp.message);
+        }
+      }
+    });
+  });
+};

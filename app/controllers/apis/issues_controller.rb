@@ -3,17 +3,13 @@ module Apis
     before_action :break_tag, only: [:create]
 
     def index 
-      @issues = current_user.issues#.last(10)
+      @issues = @user.issues#.last(10)
       render file: 'issues/index.json.jbuilder'
     end 
 
     def create
       tag_params = generate_params
-      if current_user
-        issue = current_user.issues.new(tag_params)
-      else
-        issue =  Issue.new(tag_params)
-      end
+      issue = @user.issues.new(tag_params)
 
       if issue.save
         data = {id: issue.id, name: issue.user_name, body: issue.body_without_time, time: issue.spend_time}

@@ -28,7 +28,7 @@
       //"matches": ["https://github.com/*", "https://www.github.com/*"],
       "matches": ["https://github.com/*/issues", "https://www.github.com/*/issues/*"],
       "css": ["stylesheets/tag_issues.css"],
-      "js": ["js/jquery.js", "js/tag_issues.js"]
+      "js": ["js/jquery.js", "js/jquery.cookie.js", "js/tag_issues.js"]
     }
   ],
   // options_page用于指定用户点击扩展按钮后是否会出现选项页面

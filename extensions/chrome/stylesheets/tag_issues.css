@@ -29,6 +29,32 @@ p.alert {
   font-size: 12px;
   margin: 3px 0;
 }
+#login {
+  display: block;
+  text-align: center;
+}
+input#useremail, input#password {
+  width: 360px;
+  margin: 5px auto;
+  font-size: 14px;
+  padding: 8px 5px;
+}
+#loginbutton {
+  font-size: 14px;
+  background-color: #4183C4;
+  border: 0;
+  border-radius: 3px;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  padding: 10px 5px;
+  width: 350px;
+  margin: 5px auto;
+  text-decoration: none;
+}
+#tagtime {
+  display: none;
+}
 input#input_time {
   width: 300px;
   float: left;

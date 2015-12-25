@@ -6,6 +6,12 @@
     <h2 class="center">
       <a href="http://localhost:3000" target="_blank">Tagtime</a>
     </h2>
+    <div id="login">
+      <p class="alert"></p>
+      <input type="text" id='useremail' placeholder='Email'>
+      <input type="password" id='password' placeholder='Password'>
+      <a href="#" id='loginbutton'>Login</a>
+    </div>
     <div id="tagtime"> 
       <div id="tagbox">
         <p class='alert'>{{notice}}</p>
@@ -22,6 +28,7 @@
       </ul>
     </div>
     <script src="js/jquery.js"></script>
+    <script src="js/jquery.cookie.js"></script>
     <script src="js/vue.js" ></script>
     <script src="js/tagtime.js" ></script> 
   </body>

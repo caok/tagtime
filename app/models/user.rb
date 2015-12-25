@@ -27,4 +27,17 @@ class User < ActiveRecord::Base
   has_many :issues
   has_many :participations
   has_many :projects, through: :participations
+
+  def ensure_token
+    self.token = generate_token if token.blank?
+  end
+  before_save :ensure_token
+
+  private
+  def generate_token
+    loop do
+      token = Devise.friendly_token
+      break token unless User.where(token: token).first
+    end
+  end
 end

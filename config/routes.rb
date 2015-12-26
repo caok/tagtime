@@ -15,6 +15,7 @@ Rails.application.routes.draw do
 
   namespace :apis do 
     get 'issues', to: "issues#index"
+    get 'timelist', to: "issues#timelist"
     post 'issues', to: "issues#create"
     post 'login', to: "base#login"
     post 'authorize', to: "base#authorize"

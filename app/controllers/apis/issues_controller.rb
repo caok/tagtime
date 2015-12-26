@@ -4,7 +4,7 @@ module Apis
     before_action :break_tag, only: [:create]
 
     def index 
-      @issues = @user.issues.first(10)
+      @issues = @user.issues.recent.first(10)
       render file: 'issues/index.json.jbuilder'
     end 
 
@@ -18,6 +18,26 @@ module Apis
       else
         render json: { type: "fail", message: "failed to create issue tag!" } and return
       end
+    end
+
+    # get time for number by project
+    def timelist
+      project = @user.projects.where(name: params[:project].try(:downcase)).try(:first)
+      spend_hour_hash = Issue.where(project_id: project.id).group(:number).sum(:spend_hour)
+      spend_minutes_hash = Issue.where(project_id: project.id).group(:number).sum(:spend_minutes)
+
+      timelist = []
+      spend_hour_hash.keys.each do |number|
+        str = ''
+        spend_hour = spend_hour_hash[number]
+        str += "#{spend_hour}h " if spend_hour > 0
+        spend_minutes = spend_minutes_hash[number]
+        str += "#{spend_minutes}m" if spend_minutes > 0
+        str = '0' if str.blank?
+
+        timelist << {number: number, time: str}
+      end
+      render json: { type: "success", data: timelist}
     end
   end
 end

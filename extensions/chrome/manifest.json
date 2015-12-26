@@ -17,8 +17,8 @@
     "default_popup": "tagtime.html"
   },
   "background": {
-    //"scripts": ["js/background.js"]
-    //"persistent": false 
+    "scripts": ["js/jquery.js", "js/jquery.cookie.js", "js/background.js"],
+    "persistent": false 
     //用于设定扩展是持续后台运行还是按需运行, 默认是true        
   },
   // content_script用于在用户浏览的页面中载入对应的js文件和CSS文件
@@ -36,7 +36,6 @@
   // permissions代表了你想跨域请求的地址
   "permissions": [
     "tabs",
-    "http://sneezryworks.sinaapp.com/ip.php",
     "http://localhost:*/*",
     "cookies",
     "notifications" //该属性用于开启桌面提醒功能

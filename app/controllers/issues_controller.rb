@@ -4,7 +4,7 @@ class IssuesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @issues = current_user.issues.first(20)
+    @issues = current_user.issues.recent.first(20)
 
     respond_to do |f|
       f.html 

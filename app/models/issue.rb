@@ -18,7 +18,7 @@
 class Issue < ActiveRecord::Base
   belongs_to :user
   belongs_to :project
-  default_scope { order(id: :desc) }
+  scope :recent, -> { order(id: :desc) }
 
   def user_name
     user.try(:email)

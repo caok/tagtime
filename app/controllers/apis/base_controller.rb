@@ -11,8 +11,7 @@ module Apis
       end
 
       if user.valid_password?(params[:password])
-        #sign_in user, store: false
-        sign_in user
+        sign_in user, store: false
         user.ensure_token
         render json: {type: 'success', token:user.token}
       else
@@ -33,15 +32,10 @@ module Apis
 
     private
     def authenticate_user_from_token!
-      if current_user
-        @user = current_user and return
-      end
-
       token = params[:token].presence
       user = token && User.find_by_token(token.to_s)
       if user.present?
-        #sign_in user, store: false
-        sign_in user
+        sign_in user, store: false
         @user = user
       else
         return render json: {type: 'fail'}

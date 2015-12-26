@@ -7,20 +7,24 @@ class Main extends React.Component {
     this.state = { issueList: [] };
   }
   addIssue(issueToAdd) {
-    $.post("/apis/issues", {tag: issueToAdd})
-    .success( savedIssue => {
-      if (savedIssue.type == 'success'){
-        let newIssueList = this.state.issueList;
-        newIssueList.unshift(savedIssue.data);
-        this.setState({ issueList: newIssueList });
-      }else{
-        console.log(savedIssue.message);
+    let self = this;
+    let newIssueList = self.state.issueList;
+    $.ajax({ url: '/issues',
+      type: 'POST',
+      beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+      data: {tag: issueToAdd},
+      success: function(rsp) {
+        if (rsp.type == 'success'){
+          newIssueList.unshift(rsp.data);
+          self.setState({ issueList: newIssueList });
+        } else {
+          console.log(rsp.message);
+        }
       }
-    })
-    .error(error => console.log(error));
+    });
   }
   componentDidMount() {
-    $.ajax("/apis/issues")
+    $.ajax("/issues.json")
     .success(data => this.setState({ issueList: data }))
     .error(error => console.log(error));
   }

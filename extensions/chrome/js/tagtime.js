@@ -96,7 +96,7 @@ var tagTime = new Vue({
       $.ajax({
         type: "GET",
         url: indexURL,
-        data: {token: $.cookie('token'), from: 'plugin'},
+        data: {token: $.cookie('token')},
         dataType: 'JSON',
         success: function(data){
           console.log(data);
@@ -131,7 +131,7 @@ if(check_login_status()){
           $.ajax({
             type: "GET",
             url: indexURL,
-            data: {token: $.cookie('token'), from: 'plugin'},
+            data: {token: $.cookie('token')},
             dataType: 'JSON',
             success: function(data){
               tagTime.$data.latestIssues = data;

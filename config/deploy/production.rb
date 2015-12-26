@@ -59,3 +59,9 @@ server 'tagtime.techbay.club', user: 'deploy', roles: %w{web db}
 #     auth_methods: %w(publickey password)
 #     # password: 'please use keys'
 #   }
+
+set :ssh_options, {
+  forward_agent: true,
+  auth_methods: ["publickey"],
+  keys: ["~/Dropbox/projects/gopeso/techbay.pem"]
+}

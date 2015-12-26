@@ -32,7 +32,9 @@ set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', '
 
 set :use_sudo, false
 set :rails_env, 'production'
-set :default_env, { path: "~/.rbenv/shims:~/.rbenv/bin:$PATH" }
+set :default_env, { path: "~/.rbenv/shims:~/.rbenv/bin:$PATH", RBENV_VERSION: "2.2.0" }
+set :rbenv_path, '/home/deploy/.rbenv/'
+set :rbenv_ruby, '2.2.0'
 set :depoly_via, :remote_cache
 set :backup_path, "/home/#{fetch(:deploy_user)}/Backup"
 set :conditionally_migrate, true
@@ -94,16 +96,6 @@ namespace :deploy do
     end
   end
 
-  desc "Compile bundle js for react components"
-  task :webpack_react do
-    on roles(:web), in: :sequence, wait: 5 do
-      within current_path do
-        execute "webpack -p"
-      end
-    end
-  end
-
-  before :compile_assets, :webpack_react
   after :publishing, :start_or_restart
   after :finishing, :cleanup
 end

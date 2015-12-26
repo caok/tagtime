@@ -82,7 +82,7 @@ namespace :deploy do
 
   desc "Start or Restart Application"
   task :start_or_restart do
-    on roles([:api, :web]), in: :sequence, wait: 10 do
+    on roles(:web), in: :sequence, wait: 10 do
       if test "[ -f #{shared_path}/tmp/pids/unicorn.#{fetch(:application)}.pid ]"
         execute "kill -USR2 `cat #{shared_path}/tmp/pids/unicorn.#{fetch(:application)}.pid`"
       else
@@ -94,6 +94,16 @@ namespace :deploy do
     end
   end
 
+  desc "Compile bundle js for react components"
+  task :webpack_react do
+    on roles(:web), in: :sequence, wait: 5 do
+      within current_path do
+        execute "webpack -p"
+      end
+    end
+  end
+
+  before :compile_assets, :webpack_react
   after :publishing, :start_or_restart
   after :finishing, :cleanup
 end

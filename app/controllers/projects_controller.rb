@@ -3,7 +3,7 @@ class ProjectsController < ApplicationController
   before_action :set_project, only: [:show, :edit, :update, :destroy]
 
   def index
-    @projects = current_user.projects
+    @projects = current_user.projects.active
   end
 
   def name_list
@@ -58,7 +58,7 @@ class ProjectsController < ApplicationController
   def destroy
     @project.close!
     respond_to do |format|
-      format.html { redirect_to mine_profile_path }
+      format.html { redirect_to projects_path }
       format.json { head :no_content }
     end
   end

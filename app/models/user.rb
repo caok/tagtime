@@ -33,6 +33,11 @@ class User < ActiveRecord::Base
   end
   before_save :ensure_token
 
+  def generate_name
+    self.name = email.match(/^(\w+)@/)[1] if name.blank?
+  end
+  before_save :generate_name
+
   private
   def generate_token
     loop do

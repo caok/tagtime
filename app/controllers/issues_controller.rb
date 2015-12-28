@@ -1,5 +1,6 @@
 class IssuesController < ApplicationController 
   include TagConcern
+
   before_action :break_tag, only: [:create]
   before_action :authenticate_user!
 
@@ -19,6 +20,16 @@ class IssuesController < ApplicationController
     if issue.save
       data = {id: issue.id, name: issue.user_name, body: issue.body_without_time, time: issue.spend_time}
       render json: { type: "success", message: "created new issue tag!", data: data } and return
+    else
+      render json: { type: "fail", message: "failed to create issue tag!" } and return
+    end
+  end
+
+  def destroy
+    if params[:id] and issue = Issue.find_by(id: params[:id])
+      issue.destroy 
+      @issues = current_user.issues.recent.first(1)
+      render file: 'issues/issues'
     else
       render json: { type: "fail", message: "failed to create issue tag!" } and return
     end

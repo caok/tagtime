@@ -6,6 +6,7 @@ class Main extends React.Component {
     super(props);
     this.state = { issueList: [] };
   }
+
   addIssue(issueToAdd) {
     let self = this;
     let newIssueList = self.state.issueList;
@@ -23,6 +24,23 @@ class Main extends React.Component {
       }
     });
   }
+
+  deleteIssue(tagId) { 
+    let self = this;
+    $.ajax({ 
+      type: 'DELETE',
+      beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+      url: '/issues/' + tagId
+    }).success((res) => {
+      console.log(res);
+      if (res.type == 'success'){
+        self.setState({ issueList: res.list });
+      } else {
+        console.log(res.message);
+      } 
+    })
+  }
+
   componentDidMount() {
     $.ajax("/issues.json")
     .success(data => this.setState({ issueList: data }))
@@ -39,11 +57,12 @@ class Main extends React.Component {
       }
     })
   }
+
   render() {
     return (
       <div className="container">
         <IssueBox sendIssue={this.addIssue.bind(this)} />
-        <IssueList issues={this.state.issueList} />
+        <IssueList issues={this.state.issueList} deleteIssue={this.deleteIssue.bind(this)} />
       </div>
     );
   }

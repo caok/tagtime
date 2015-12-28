@@ -20,6 +20,11 @@ module Apis
       end
     end
 
+    def projects
+      project_names= current_user.projects.select(:name).map(&:name)
+      render json: project_names
+    end
+
     # get time for number by project
     def timelist
       project = @user.projects.where(name: params[:project].try(:downcase)).try(:first)

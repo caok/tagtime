@@ -27,6 +27,17 @@ class Main extends React.Component {
     $.ajax("/issues.json")
     .success(data => this.setState({ issueList: data }))
     .error(error => console.log(error));
+
+    $.ajax({ url: '/projects/name_list',
+      type: 'GET',
+      beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+      success: function(data) {
+        $('input#issueArea').atwho({
+          at: '@',
+          data: data
+        });
+      }
+    })
   }
   render() {
     return (

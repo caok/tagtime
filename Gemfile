@@ -32,7 +32,6 @@ gem 'nprogress-rails'
 gem 'normalize-rails'
 gem 'neat'
 gem 'font-awesome-rails'
-gem 'tipsy-rails'
 
 group :development, :test do
   gem 'thin'

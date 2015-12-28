@@ -3,6 +3,7 @@ var createURL = host + "apis/issues";
 var indexURL = host + "apis/issues";
 var loginURL = host + "apis/login";
 var authorizeURL = host + "apis/authorize";
+var projectsURL = host + "apis/projects";
 
 String.prototype.endWith=function(endStr){
   var d=this.length-endStr.length;
@@ -53,10 +54,31 @@ function init_tag_content(){
   });
 };
 
+function init_projects(){
+  if ($.cookie('token') != undefined){
+    $.ajax({
+      type: "get",
+      url: projectsURL,
+      data: {token: $.cookie('token')},
+      dataType: 'JSON',
+      success: function(data){
+        $('input#input_time').atwho({
+          at: '@',
+          data: data
+        });
+      }
+    });
+  }
+}
+
 function monitor_enter_button(){
   $('#input_time').bind('keyup', function(event) {
     if (event.keyCode == "13") {
-      $("input[type='submit']").click();
+      var content = $(this).val().trim();
+      var matched = content.match(/^@(\w+)/i);
+      if (matched != undefined && matched[0] != content) {
+        $("input[type='submit']").click();
+      };
     }
   });
 }
@@ -112,6 +134,7 @@ if(check_login_status()){
   $('#tagtime').show();
 
   init_tag_content();
+  init_projects();
 }else{
   $('#tagtime').hide();
   $('#login').show();
@@ -128,6 +151,7 @@ if(check_login_status()){
           $('#tagtime').show();
           init_tag_content();
           $.cookie('token', rsp.token, { path: '/' });
+          init_projects();
           $.ajax({
             type: "GET",
             url: indexURL,

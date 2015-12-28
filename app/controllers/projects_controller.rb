@@ -6,6 +6,11 @@ class ProjectsController < ApplicationController
     @projects = current_user.projects
   end
 
+  def name_list
+    project_names= current_user.projects.select(:name).map(&:name)
+    render json: project_names
+  end
+
   def show
     @issues = @project.issues
   end

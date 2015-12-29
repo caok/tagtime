@@ -34,12 +34,8 @@
   <h2>TEAM</h2>
 
   <%= form_for(Participation.new, url: project_assign_path(project_id: @project), method: :post) do |f| %>
-    <div class="field">
-      <%= f.select :user_id, @project.member_options, include_blank: "Add Member to Team" %>
-    </div>
-    <div class="actions">
-      <%= f.submit "Submit" %>
-    </div>
+    <%= f.select :user_id, @project.member_options, include_blank: "Add Member to Team" %>
+    <%= f.submit "Add Member", class: 'btn-sm' %>
   <% end %>
 
   <table>

@@ -1,10 +1,10 @@
 #members {
   margin-top: 30px;
   h2 {
-    margin-bottom: 0;
+    margin-bottom: 10px;
   }
   table {
-    margin: 5px 0;
+    margin: 0;
     td {
       font-size: 1.1em;
     }
@@ -14,5 +14,6 @@
 #new_participation {
   input, select {
     display: inline-block;
+    margin: 5px 0;
   }
 }

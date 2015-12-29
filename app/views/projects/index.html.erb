@@ -20,7 +20,7 @@
         <td><%= project.spend_hours %> h</td>
         <td><%= project.members_label %></td>
         <td>
-          <%= link_to 'Destroy', project, method: :delete, data: { confirm: 'Are you sure?' }, class: 'button-danger btn-sm' if project.owner == current_user %>
+          <%= link_to 'Destroy', project, method: :delete, data: { confirm: 'Are you sure?' }, class: 'button-danger btn-sm' if project.owner.user_id == current_user.id %>
         </td>
       </tr>
     <% end %>

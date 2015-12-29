@@ -35,12 +35,24 @@ class Project < ActiveRecord::Base
     (issues.sum(:spend_hour) + (issues.sum(:spend_minutes) || 0)/60.0).round(2)
   end
 
-  def members
+  def members_label
     if users.count > 3
       users.first(3).map(&:name).join(', ') + "  +#{users.count - 3}"
     else
       users.map(&:name).join(', ')
     end
+  end
+
+  def managers
+    participations.where.not(role: 'participator').map(&:user)
+  end
+
+  def owner
+    participations.where(role: 'owner').first
+  end
+
+  def member_options
+    User.where.not(id: users.map(&:id)).collect { |p| [p.name, p.id] }
   end
 
   before_validation :downcase_name

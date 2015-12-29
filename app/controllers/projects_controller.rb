@@ -1,6 +1,6 @@
 class ProjectsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_project, only: [:show, :edit, :update, :destroy]
+  before_action :set_project, only: [:show, :edit, :update, :destroy, :destroy_member, :give_manager_right, :revoke_manager_right]
 
   def index
     @projects = current_user.projects.active
@@ -40,7 +40,7 @@ class ProjectsController < ApplicationController
   def update
     respond_to do |format|
       if @project.update(project_params)
-        format.html { redirect_to @project, notice: 'Project was successfully updated.' }
+        format.html { redirect_to edit_project_path(@project), notice: 'Project was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -51,8 +51,23 @@ class ProjectsController < ApplicationController
 
   def assign
     project = Project.find(params[:project_id])
-    Participation.find_or_create_by(user_id: params[:participation][:user_id], project_id: project.id, role: params[:participation][:role])
-    redirect_to project
+    Participation.find_or_create_by(user_id: params[:participation][:user_id], project_id: project.id, role: "participator")
+    redirect_to edit_project_path(project)
+  end
+
+  def give_manager_right
+    @project.participations.where(id: params[:member_id]).update_all(role: 'manager')
+    redirect_to edit_project_path(@project)
+  end
+
+  def revoke_manager_right
+    @project.participations.where(id: params[:member_id]).update_all(role: 'participator')
+    redirect_to edit_project_path(@project)
+  end
+
+  def destroy_member
+    @project.participations.where(id: params[:member_id]).destroy_all
+    redirect_to edit_project_path(@project)
   end
 
   def destroy
@@ -72,4 +87,3 @@ class ProjectsController < ApplicationController
     params.require(:project).permit(:name, :content, :repo_url, :state)
   end
 end
-

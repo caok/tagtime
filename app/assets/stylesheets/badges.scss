@@ -1,0 +1,101 @@
+$badge-font-size: 0.75em !default;
+$medium-gray: #999 !default;
+$alert-color: #fff6bf !default;
+$error-color: #fbe3e4 !default;
+$notice-color: #e5edf8 !default;
+$success-color: #e6efc2 !default;
+
+@mixin badge($color: $medium-gray) {
+  background-color: $color;
+  border-radius: $badge-font-size * 5;
+  color: darken($color, 60%);
+  display: inline-block;
+  font-size: $badge-font-size;
+  line-height: 1;
+  padding: 0.4em 1.2em;
+}
+
+.badge {
+  @include badge;
+  color: white;
+}
+
+.badge-alert {
+  @include badge($alert-color);
+}
+
+.badge-error {
+  @include badge($error-color);
+}
+
+.badge-notice {
+  @include badge($notice-color);
+}
+
+.badge-success {
+  @include badge($success-color);
+}
+
+$primary-color: #477dca !default;
+$danger-color: #c9302c !default;
+$warning-color: #f0ad4e !default;
+$success-color: #5cb85c !default;
+$info-color: #5bc0de !default;
+@mixin button($color: $primary-color) {
+  background-color: $color;
+  color: white;
+  appearance: none;
+  border: 0;
+  border-radius: 3px;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 1em;
+  -webkit-font-smoothing: antialiased;
+  font-weight: 600;
+  line-height: 1;
+  padding: 0.75em 1.5em;
+  text-decoration: none;
+  transition: background-color 150ms ease;
+  user-select: none;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.button {
+  @include button;
+}
+.button:hover, .button:focus {
+  background-color: #3964a2;
+  color: #fff;
+}
+
+.btn-sm {
+  padding: 1px 5px !important;
+  font-size: 12px !important;
+  line-height: 1.5 !important;
+  border-radius: 3px !important;
+}
+.btn-sm:hover, .btn-sm:focus {
+  color: #fff;
+}
+
+.button-cancel {
+  @include button($medium-gray)
+}
+.button-cancel:hover, .button-cancel:focus {
+  background-color: #555;
+  color: #fff;
+}
+.button-danger {
+  @include button($danger-color);
+}
+.button-warning {
+  @include button($warning-color);
+}
+.button-success {
+  @include button($success-color);
+}
+.button-info {
+  @include button($info-color);
+}

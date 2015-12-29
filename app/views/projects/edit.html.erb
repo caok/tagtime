@@ -1,5 +1,76 @@
-<h1>Editing Project</h1>
+<%= form_for(@project) do |f| %>
+  <div class="header">
+    <h1>Editing Project</h1>
+    <%= f.submit "Done", class: 'right' %>
+  </div>
 
-<%= render 'form' %>
+  <% if @project.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@project.errors.count, "error") %> prohibited this project from being saved:</h2>
 
-<%= link_to 'Show', @project %> 
+      <ul>
+      <% @project.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %>
+    <%= f.text_field :name, disabled: true %>
+  </div>
+  <div class="field">
+    <%= f.label :content %>
+    <%= f.text_area :content %>
+  </div>
+  <div class="field">
+    <%= f.label :repo_url %>
+    <%= f.text_field :repo_url %>
+  </div>
+<% end %>
+
+<div id="members">
+  <h2>TEAM</h2>
+
+  <%= form_for(Participation.new, url: project_assign_path(project_id: @project), method: :post) do |f| %>
+    <div class="field">
+      <%= f.select :user_id, @project.member_options, include_blank: "Add Member to Team" %>
+    </div>
+    <div class="actions">
+      <%= f.submit "Submit" %>
+    </div>
+  <% end %>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Member</th>
+        <th>Role</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @project.participations.each do |member| %>
+        <tr>
+          <td><%= member.user_name %></td>
+          <td>
+            <span class="<%= member.is_manager? ? 'badge-notice' : 'badge' %>">
+              <%= member.role %>
+            </span>
+          </td>
+          <td>
+            <% if can_manage_member?(current_user, member) %>
+              <% if member.is_manager? %>
+                <%= link_to 'Revoke manager right', revoke_manager_right_project_path(id: @project.id, member_id: member.id), method: :post, class: 'button-info btn-sm' %>
+              <% else %>
+                <%= link_to 'Give manager right', give_manager_right_project_path(id: @project.id, member_id: member.id), method: :post, class: 'button btn-sm' %>
+              <% end %>
+              <%= link_to 'Destroy', destroy_member_project_path(id: @project.id, member_id: member.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'button-danger btn-sm' %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

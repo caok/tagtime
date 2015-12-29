@@ -12,6 +12,9 @@ Rails.application.routes.draw do
   resources :projects do
     post 'assign'
     get 'name_list', on: :collection
+    delete 'destroy_member', on: :member
+    post 'revoke_manager_right', on: :member
+    post 'give_manager_right', on: :member
   end
 
   namespace :apis do 

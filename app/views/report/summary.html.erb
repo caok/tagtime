@@ -1,0 +1,49 @@
+<h1>Report</h1>
+
+<div class="filter">
+  <input type="text" id='date_range' name="date_range" value="<%= @date_range %>" />
+</div>
+
+<%= line_chart @report_by_date, library: {
+  tooltip: {
+    xDateFormat: '%Y-%m-%d',
+    pointFormat: "Hours: <b>{point.y}</b>h<br/>",
+    valueDecimals: 2
+  }, 
+  yAxis: {
+    lineWidth: 1,
+    tickWidth: 1, 
+    title: { 
+      text: "Hours"
+    },
+    labels: { format: '{value}h' }
+  }, 
+  xAxis: {
+    title: { text: "Date" },
+    type: 'datetime',
+    dateTimeLabelFormats: {
+      day: '%b %e'
+    }
+  }
+} %>
+
+<hr>
+
+<div class="pie_report">
+  <table>
+    <% @report_by_project.each do |report| %>
+      <tr>
+        <td><%= report[0] %></td>
+        <td><%= report[1] %>h</td>
+      </tr>
+    <% end %>
+  </table>
+  <div class='pie_chart'>
+    <%= pie_chart @report_by_project, library: {
+      tooltip: {
+        pointFormat: "Hours: <b>{point.y}</b>h<br/>",
+        valueDecimals: 2
+      }, 
+    } %>
+  </div>
+</div>

@@ -41,6 +41,26 @@ class Main extends React.Component {
     })
   }
 
+  updateIssue(tagId, tagValue) {
+    console.log(tagId)
+    console.log(tagValue)
+    let self = this;
+
+    $.ajax({ 
+      type: 'PATCH',
+      beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+      url: '/issues/' + tagId,
+      data: {tag: tagValue}
+    }).success((res) => {
+      console.log(res);
+      if (res.type == 'success'){
+        self.setState({ issueList: res.list });
+      } else {
+        console.log(res.message);
+      } 
+    })
+  }
+
   componentDidMount() {
     $.ajax("/issues.json")
     .success(data => this.setState({ issueList: data }))
@@ -62,7 +82,7 @@ class Main extends React.Component {
     return (
       <div className="container">
         <IssueBox sendIssue={this.addIssue.bind(this)} />
-        <IssueList issues={this.state.issueList} deleteIssue={this.deleteIssue.bind(this)} />
+        <IssueList issues={this.state.issueList} deleteIssue={this.deleteIssue.bind(this)} updateIssue={this.updateIssue.bind(this)}/>
       </div>
     );
   }

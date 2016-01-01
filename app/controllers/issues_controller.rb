@@ -19,7 +19,7 @@ class IssuesController < ApplicationController
     issue = current_user.issues.new(tag_params)
 
     if issue.save
-      data = {id: issue.id, name: issue.user_name, body: issue.body_without_time, time: issue.spend_time, happenedAt: issue.happened_at}
+      data = {id: issue.id, name: issue.user_name, body: issue.body_without_time, time: issue.spend_time, happenedAt: issue.happened_at, content: issue.content, project_name: issue.project_name}
       render json: { type: "success", message: "created new issue tag!", data: data } and return
     else
       render json: { type: "fail", message: "failed to create issue tag!" } and return

@@ -5,3 +5,5 @@ json.name issue.user_name
 json.body issue.body_without_time
 json.time issue.spend_time
 json.happenedAt issue.happened_at
+json.project_name issue.project_name
+json.content issue.content

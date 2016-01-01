@@ -25,7 +25,11 @@ module TagConcern
 
     # [project,number,hours,minutes].each {|s| content = content.gsub(/#{s}/, '')}
 
-    content = content.length > 1 ? content[1] : "" 
+    if content
+      content = content.length > 1 ? content[1] : "" 
+    else
+      content = ""
+    end
     if date
       date = date.length > 1 ? match_date(date[1]) : Date.today
     else

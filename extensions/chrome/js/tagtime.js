@@ -39,18 +39,20 @@ function init_tag_content(){
     if (url.indexOf('issues') > 0){
       if (url.endWith('issues')) {
         //issue list page
-        project = title.match(/\/\w+$/)[0].replace('/', '');
+        project = title.match(/\/(\w+)$/)[1];
         var str = '@' + project + ' ';
       } else {
         //issue detail page
-        num = title.match(/Issue #\d /)[0].trim().replace('Issue ', '');
-        project = title.match(/\/\w+$/)[0].replace('/', '');
-        var str = '@' + project + ' ' + num + ' ';
+        num = title.match(/Issue #(\d+) /)[1];
+        project = title.match(/\/(\w+)$/)[1];
+        content = title.match(/^(.+)\ \·\ Issue/)[1];
+        var str = '@' + project + ' ' + num + ' ' + content + ' ';
       }
     } else {
       var str = '';
     }
     $('#input_time').val(str);
+    $("input#input_time").focus();
   });
 };
 

@@ -35,7 +35,7 @@ module Apis
       spend_hour_hash.keys.each do |number|
         str = ''
         spend_hour = spend_hour_hash[number]
-        str += "#{spend_hour}h " if spend_hour > 0
+        str += "#{spend_hour}h" if spend_hour > 0
         spend_minutes = spend_minutes_hash[number]
         str += "#{spend_minutes}m" if spend_minutes > 0
         str = '0' if str.blank?

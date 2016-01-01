@@ -15,7 +15,7 @@
     <div id="tagtime"> 
       <div id="tagbox">
         <p class='alert'>{{notice}}</p>
-        <input type="text" id="input_time" name="tag_time" placeholder="{{timeTip}}" v-model='tagContent' />
+        <input type="text" id="input_time" name="tag_time" placeholder="{{timeTip}}" v-model='tagContent' autocomplete='off' />
         <input type="submit" v-on="click: createTag"> 
       </div>
       <div class="clear"></div>

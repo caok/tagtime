@@ -8,7 +8,7 @@ export default class IssueBox extends React.Component {
     return (
       <div className='issue_box'>
         <form className='timer' onSubmit={this.sendIssue.bind(this)}>
-          <input type="text" id='issueArea' ref='issueArea' placeholder='What are you working on?' />
+          <input type="text" id='issueArea' ref='issueArea' placeholder='What are you working on?' autoComplete="off" />
           <button type='submit'>submit</button>
         </form>
         <div className='clear'></div>

@@ -78,6 +78,18 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def users
+    project = current_user.projects.find_by(id: params[:project_id])
+    users = []
+    if project.present?
+      project.users.each do |user|
+        users << {id: user.id, text: user.name}
+      end
+    end
+
+    render json: users
+  end
+
   private
     def set_project
       @project = current_user.projects.find(params[:id])

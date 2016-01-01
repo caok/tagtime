@@ -33,6 +33,7 @@ gem 'nprogress-rails'
 gem 'normalize-rails'
 gem 'neat'
 gem 'font-awesome-rails'
+gem 'select2-rails'
 
 group :development, :test do
   gem 'thin'

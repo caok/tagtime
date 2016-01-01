@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     delete 'destroy_member', on: :member
     post 'revoke_manager_right', on: :member
     post 'give_manager_right', on: :member
+    get 'users', on: :collection
   end
 
   namespace :apis do 

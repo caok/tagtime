@@ -8,6 +8,7 @@
 //= require daterangepicker
 //= require highcharts
 //= require chartkick
+//= require select2
 //= require_tree .
 
 $(document).ready(function(){

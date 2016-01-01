@@ -1,8 +1,12 @@
 <h1>Report</h1>
 
-<div class="filter">
-  <input type="text" id='date_range' name="date_range" value="<%= @date_range %>" />
-</div>
+<%= form_tag report_summary_path, method: :get, class: 'filter' do %>
+  <%= select_tag "project", options_from_collection_for_select(current_user.projects, :id, :name, @project_id), include_blank: 'Select Project' %>
+  <%= select_tag "users", options_from_collection_for_select([], :id, :name), multiple: true, include_blank: 'Select User' %>
+  <%= text_field_tag "date_range", value: @date_range %>
+  <%= submit_tag 'Search' %>
+  <%= link_to 'Clear', report_summary_path, class: 'button-warning' %>
+<% end %>
 
 <%= line_chart @report_by_date, library: {
   tooltip: {
@@ -31,7 +35,7 @@
 
 <div class="pie_report">
   <table>
-    <% @report_by_project.each do |report| %>
+    <% @reports.each do |report| %>
       <tr>
         <td><%= report[0] %></td>
         <td><%= report[1] %>h</td>
@@ -39,7 +43,7 @@
     <% end %>
   </table>
   <div class='pie_chart'>
-    <%= pie_chart @report_by_project, library: {
+    <%= pie_chart @reports, library: {
       tooltip: {
         pointFormat: "Hours: <b>{point.y}</b>h<br/>",
         valueDecimals: 2
@@ -47,3 +51,29 @@
     } %>
   </div>
 </div>
+
+<script>
+  $(document).ready(function(){
+    $('select#project').select2({placeholder: 'Select a project', allowClear: true});
+    $('select#users').select2({
+      //data: [{id: 1, text: 'jack'}, {id: 2, text: 'test'}],
+      placeholder: 'Select users',
+      ajax: {
+        url: '<%= users_projects_path %>',
+        dataType: 'json',
+        delay: 250,
+        data: function(params) {
+          return {
+            project_id: $('#project').val()
+          }
+        },
+        processResults: function(data, params){
+          return {
+            results: data
+          }
+        },
+        cache: true
+      }
+    });
+  });
+</script>

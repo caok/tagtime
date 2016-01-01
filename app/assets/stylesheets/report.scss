@@ -10,3 +10,35 @@
     float: right;
   }
 }
+
+.filter {
+  margin: 10px 0;
+  display: flex;
+  display: -webkit-flex;
+  .select2 {
+    margin: 0 5px;
+  }
+  .select2-selection.select2-selection--multiple, .select2-selection.select2-selection--single {
+    height: 36px;
+  }
+  #select2-project-container {
+    line-height: 36px !important;
+  }
+  .select2-selection__arrow {
+    height: 36px !important;
+  }
+  select {
+    width: 18%;
+  }
+  input#date_range {
+    width: 20%;
+    margin: 0 5px;
+    height: 36px;
+  }
+  input.select2-search__field {
+    box-shadow: none;
+  }
+  input[type='submit'] {
+    margin: 0 5px;
+  }
+}

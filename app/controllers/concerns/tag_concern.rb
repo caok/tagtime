@@ -7,24 +7,25 @@ module TagConcern
                                      spend_hour: tags[2],
                                      spend_minutes: tags[3],
                                      happened_at: tags[4],
-                                     content: tags[5],
-                                     original_content: tags[6]).permit!
+                                     content: tags[5]).permit!
   end
 
   def break_tag
-    tag = params[:tag].try(:strip)
-
+    # "with feigeofeiofefefiej @feedmob for 11/24 #16 11h:32m" 
+    tag = params[:tag].try(:strip) 
     return nil if tag.blank?
-    date = tag.match(/for\s(\w+\/\w+)[ ;,.，。]?/)
+
     project = tag.match(/\@\w+[ ;,.，。]?/).to_s
+    date = tag.match(/for\s(\w+\/\w+)[ ;,.，。]?/)
+    content = tag.match(/with\s(.+)@/)
+
     number = tag.match(/\#\d+[ ;,.，。]?/).to_s
     hours = tag.match(/[\d.]+(hrs|hr|h|H)+/).to_s
     minutes = tag.match(/[\d.]+(mins|min|m|M)+/).to_s
 
-    content = original_content = tag
-    [date.to_s, project,number,hours,minutes].each {|s| content = content.gsub(/#{s}/, '')}
-    content = content.try(:strip)
+    # [project,number,hours,minutes].each {|s| content = content.gsub(/#{s}/, '')}
 
+    content = content.length > 1 ? content[1] : "" 
     date = date.length > 1 ? match_date(date[1]) : Date.today
 
     number = number.gsub(/[# ;,，。]/, '')
@@ -39,7 +40,7 @@ module TagConcern
       hours = hours.to_i
     end 
 
-    @tags = [project_id, number, hours.to_i, minutes, date, content, original_content]
+    @tags = [project_id, number, hours.to_i, minutes, date, content]
   end
 
   def match_date(date_str) 

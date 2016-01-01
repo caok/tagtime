@@ -353,6 +353,3 @@ DEPENDENCIES
   thin
   uglifier (>= 2.7.2)
   unicorn
-
-BUNDLED WITH
-   1.10.6

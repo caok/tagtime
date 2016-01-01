@@ -26,7 +26,11 @@ module TagConcern
     # [project,number,hours,minutes].each {|s| content = content.gsub(/#{s}/, '')}
 
     content = content.length > 1 ? content[1] : "" 
-    date = date.length > 1 ? match_date(date[1]) : Date.today
+    if date
+      date = date.length > 1 ? match_date(date[1]) : Date.today
+    else
+      date = Date.today
+    end
 
     number = number.gsub(/[# ;,，。]/, '')
     hours = hours.gsub(/(hrs|hr|h|H)/, '').to_f

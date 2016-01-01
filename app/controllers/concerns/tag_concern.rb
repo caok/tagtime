@@ -24,17 +24,10 @@ module TagConcern
     minutes = tag.match(/[\d.]+(mins|min|m|M)+/).to_s
 
     # [project,number,hours,minutes].each {|s| content = content.gsub(/#{s}/, '')}
+    #
 
-    if content
-      content = content.length > 1 ? content[1] : "" 
-    else
-      content = ""
-    end
-    if date
-      date = date.length > 1 ? match_date(date[1]) : Date.today
-    else
-      date = Date.today
-    end
+    content = match_content(content)
+    date = match_date(date)
 
     number = number.gsub(/[# ;,，。]/, '')
     hours = hours.gsub(/(hrs|hr|h|H)/, '').to_f
@@ -51,7 +44,23 @@ module TagConcern
     @tags = [project_id, number, hours.to_i, minutes, date, content]
   end
 
-  def match_date(date_str) 
+  def match_content(content)
+    if content
+      content = content.length > 1 ? content[1].strip : "" 
+    else
+      content = ""
+    end 
+  end
+
+  def match_date(date)
+    if date
+      date = date.length > 1 ? generate_date(date[1]) : Date.today
+    else
+      date = Date.today
+    end 
+  end
+
+  def generate_date(date_str) 
     if date_str.include?('/')
       dates = date_str.split('/')
       return Date.new(Time.now.year, dates[0].to_i, dates[1].to_i)
@@ -61,5 +70,5 @@ module TagConcern
     when "yesterday" then DateTime.now.yesterday
     else Date.yesterday
     end
-  end
+  end 
 end

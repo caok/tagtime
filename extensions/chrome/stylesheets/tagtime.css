@@ -11,6 +11,17 @@ body {
 h2 {
   margin-bottom: 15px;
 }
+h2.title {
+  text-align: center;
+  position: relative;
+}
+h2.title img#exit {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 6px;
+  cursor: pointer;
+}
 h2 a {
   text-decoration: none;
   color: black;

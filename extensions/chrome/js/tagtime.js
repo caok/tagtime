@@ -95,6 +95,21 @@ function monitor_enter_button(){
   });
 }
 
+function init_exit_button() {
+  if ($('#tagtime').is(':visible')){
+    $('img#exit').show();
+    $('img#exit').click(function(){
+      $('#useremail').val('');
+      $('#password').val('');
+      $.cookie('token', null); 
+      $('#tagtime').hide();
+      $('#login').show();
+    });
+  }else{
+    $('img#exit').hide();
+  };
+}
+
 var tagTime = new Vue({
   el: "#tagtime",
   data: {
@@ -147,6 +162,7 @@ if(check_login_status()){
 
   init_projects();
   init_tag_content();
+  init_exit_button();
 }else{
   $('#tagtime').hide();
   $('#login').show();
@@ -164,6 +180,7 @@ if(check_login_status()){
           $.cookie('token', rsp.token, { path: '/' });
           init_projects();
           init_tag_content();
+          init_exit_button();
           $.ajax({
             type: "GET",
             url: indexURL,

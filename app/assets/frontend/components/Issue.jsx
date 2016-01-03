@@ -23,7 +23,7 @@ export default class Issue extends React.Component {
     editor.css({"display":  ""});
     editor.css("left", item.position().left);
     editor.css("top", item.position().top);
-    editor.val("with " + this.props.content + " @" + this.props.project_name + " for" + " #" + this.props.number + " " + this.props.time);
+    editor.val(this.props.content  + " @" + this.props.project_name + " " + this.props.happenedAt + " #" + this.props.number + " " + this.props.time);
   }
 
   hiddenEditor(event) {

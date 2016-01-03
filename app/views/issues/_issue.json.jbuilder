@@ -4,6 +4,6 @@ json.time "#{issue.spend_hour}h#{issue.spend_minutes}m"
 json.name issue.user_name
 json.body issue.body_without_time
 json.time issue.spend_time
-json.happenedAt issue.happened_at
+json.happenedAt issue.happened_at.strftime('%m/%d')
 json.project_name issue.project_name
 json.content issue.content

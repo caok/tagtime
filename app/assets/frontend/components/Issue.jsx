@@ -17,11 +17,12 @@ export default class Issue extends React.Component {
 
   editIssue(event) { 
     $(".issue_editor").css({"display":  "none"});
-    var editor = $(event.target).parent().children(".issue_editor")
+    var item = $(event.target)
+    var editor = item.parent().children(".issue_editor")
 
-    editor.css({"display":  "", "width": "800px"});
-    editor.css("left", event.clientX);
-    editor.css("top", event.clientY);
+    editor.css({"display":  ""});
+    editor.css("left", item.position().left);
+    editor.css("top", item.position().top);
     editor.val("with " + this.props.content + " @" + this.props.project_name + " for" + " #" + this.props.number + " " + this.props.time);
   }
 

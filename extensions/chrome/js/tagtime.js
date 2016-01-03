@@ -4,6 +4,7 @@ var indexURL = host + "apis/issues";
 var loginURL = host + "apis/login";
 var authorizeURL = host + "apis/authorize";
 var projectsURL = host + "apis/projects";
+var projects = [];
 
 String.prototype.endWith=function(endStr){
   var d=this.length-endStr.length;
@@ -34,22 +35,29 @@ function check_login_status() {
 function init_tag_content(){
   chrome.tabs.getSelected(function(tab) {
     console.log(tab.title);
-    title = tab.title;
-    url = tab.url;
-    if (url.indexOf('issues') > 0){
-      if (url.endWith('issues')) {
+    var title = tab.title;
+    var url = tab.url;
+    var str = '';
+    if (url.indexOf("https://github.com") >= 0 && url.indexOf('issues') >= 0){
+      if (title.indexOf("Issues ·") >= 0) {
         //issue list page
-        project = title.match(/\/(\w+)$/)[1];
-        var str = '@' + project + ' ';
-      } else {
+        var project = title.match(/\/(\w+)$/)[1];
+        project = project.toLowerCase();
+        if (projects.indexOf(project) >= 0){
+          console.log(project);
+          str = '@' + project + ' ';
+        }
+      } else if (title.indexOf("Issue #") >= 0) {
         //issue detail page
-        num = title.match(/Issue #(\d+) /)[1];
-        project = title.match(/\/(\w+)$/)[1];
-        content = title.match(/^(.+)\ \·\ Issue/)[1];
-        var str = '@' + project + ' ' + num + ' ' + content + ' ';
+        var num = title.match(/Issue #(\d+) /)[1];
+        var project = title.match(/\/(\w+)$/)[1];
+        project = project.toLowerCase();
+        var content = title.match(/^(.+)\ \·\ Issue/)[1];
+        if (projects.indexOf(project) >= 0){
+          console.log(project);
+          str = '@' + project + ' ' + num + ' ' + content + ' ';
+        }
       }
-    } else {
-      var str = '';
     }
     $('#input_time').val(str);
     $("input#input_time").focus();
@@ -63,11 +71,13 @@ function init_projects(){
       url: projectsURL,
       data: {token: $.cookie('token')},
       dataType: 'JSON',
+      async: false,
       success: function(data){
         $('input#input_time').atwho({
           at: '@',
           data: data
         });
+        projects = data;
       }
     });
   }
@@ -135,8 +145,8 @@ if(check_login_status()){
   $('#login').hide();
   $('#tagtime').show();
 
-  init_tag_content();
   init_projects();
+  init_tag_content();
 }else{
   $('#tagtime').hide();
   $('#login').show();
@@ -151,9 +161,9 @@ if(check_login_status()){
         if(rsp.type == 'success'){
           $('#login').hide();
           $('#tagtime').show();
-          init_tag_content();
           $.cookie('token', rsp.token, { path: '/' });
           init_projects();
+          init_tag_content();
           $.ajax({
             type: "GET",
             url: indexURL,

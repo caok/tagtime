@@ -12,6 +12,7 @@ var TagIssues = (function($){
 
   var fetch_data = function(update){
     project = $(".entry-title strong").text();
+    console.log("from tag issues");
     console.log(project);
     chrome.runtime.sendMessage(project, function(response){
       console.log(response);

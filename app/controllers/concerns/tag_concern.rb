@@ -15,18 +15,18 @@ module TagConcern
     tag = params[:tag].try(:strip) 
     return nil if tag.blank?
 
-    project = tag.match(/\@\w+[ ;,.，。]?/).to_s
-    date = tag.match(/for\s(\w+\/\w+)[ ;,.，。]?/)
-    content = tag.match(/with\s(.+)@/)
+    project = tag.match(/\@\w+[ ;,.，。]?/).to_s.strip
+    date = tag.match(/[ ;,.，。](\w+\/\w+)[ ;,.，。]?/)
+    content = tag
 
-    number = tag.match(/\#\d+[ ;,.，。]?/).to_s
-    hours = tag.match(/[\d.]+(hrs|hr|h|H)+/).to_s
-    minutes = tag.match(/[\d.]+(mins|min|m|M)+/).to_s
+    number = tag.match(/\#\d+[ ;,.，。]?/).to_s.strip
+    hours = tag.match(/[\d.]+(hrs|hr|h|H)+/).to_s.strip
+    minutes = tag.match(/[\d.]+(mins|min|m|M)+/).to_s.strip 
 
-    # [project,number,hours,minutes].each {|s| content = content.gsub(/#{s}/, '')}
-    #
-
-    content = match_content(content)
+    [date, project, number, hours, minutes].each {|s| content = content.gsub(/#{s}/, '')}
+    
+    # content = match_content(content)
+    content = content.strip
     date = match_date(date)
 
     number = number.gsub(/[# ;,，。]/, '')

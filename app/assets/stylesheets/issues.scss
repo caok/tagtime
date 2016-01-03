@@ -29,6 +29,12 @@
           margin: 0 20px;
         }
       }
+    } 
+    .issue_editor {
+      position: absolute;
+      width: 800px;
+      z-index: 9999;
+      margin-top: -10px;
     }
   }
 }

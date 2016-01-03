@@ -40,7 +40,7 @@ class ReportController < ApplicationController
     @report_by_date = []
     (start_date..end_date).each do |date|
       hours = (spend_hour_hash[date].to_f + spend_minute_hash[date].to_f / 60).round(2)
-      @report_by_date << [date, hours]
+      @report_by_date << [date.to_s(:md), hours]
     end
   end
 

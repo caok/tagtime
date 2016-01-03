@@ -8,27 +8,18 @@
   <%= link_to 'Clear', report_summary_path, class: 'button-warning' %>
 <% end %>
 
-<%= line_chart @report_by_date, library: {
+<%= column_chart @report_by_date, library: {
   tooltip: {
-    xDateFormat: '%Y-%m-%d',
     pointFormat: "Hours: <b>{point.y}</b>h<br/>",
     valueDecimals: 2
   }, 
   yAxis: {
-    lineWidth: 1,
-    tickWidth: 1, 
-    title: { 
-      text: "Hours"
-    },
+    title: { text: "Hours" },
     labels: { format: '{value}h' }
   }, 
   xAxis: {
     title: { text: "Date" },
-    type: 'datetime',
-    dateTimeLabelFormats: {
-      day: '%b %e'
-    }
-  }
+  },
 } %>
 
 <hr>

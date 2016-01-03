@@ -38,7 +38,8 @@ module TagConcern
 
     if hours != hours.to_i
       minutes = (minutes + (hours - hours.to_i)*60).to_i
-      hours = hours.to_i
+      hours = hours.to_i + (minutes/60).to_i
+      minutes = (minutes%60).to_i
     end 
 
     @tags = [project_id, number, hours.to_i, minutes, date, content]

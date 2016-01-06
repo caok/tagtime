@@ -6,13 +6,22 @@ class IssuesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @issues = current_user.issues.recent.first(20)
+    session[:page] = 1 
+    @issues = current_user.issues.recent.more(session[:page])
 
     respond_to do |f|
       f.html 
       f.json
     end
   end 
+
+  def load_more
+    session[:page] ||= 1 
+    session[:page] += 1
+    
+    @issues = current_user.issues.recent.more(session[:page])
+    render file: 'issues/issues'
+  end
 
   def create
     tag_params = generate_params

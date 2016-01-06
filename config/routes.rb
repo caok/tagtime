@@ -12,7 +12,10 @@ Rails.application.routes.draw do
   root "issues#index"
 
   get 'mine/profile'
-  resources :issues
+  resources :issues do 
+    get 'load_more', on: :collection
+  end
+
   resources :projects do
     post 'assign'
     get 'name_list', on: :collection

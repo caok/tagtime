@@ -18,7 +18,13 @@
 class Issue < ActiveRecord::Base
   belongs_to :user
   belongs_to :project
+
+  PAGE_COUNT = 10
+
   scope :recent, -> { order(id: :desc) }
+  scope :more, -> (page){
+    first(page * PAGE_COUNT)
+  }
 
   def user_name
     user.try(:email)
@@ -48,5 +54,8 @@ class Issue < ActiveRecord::Base
     str = '0' if str.blank?
 
     str
+  end
+
+  def split_by_date
   end
 end

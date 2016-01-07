@@ -39,7 +39,7 @@ class IssuesController < ApplicationController
     tag_params = generate_params
     if @issue
       @issue.update(tag_params)
-      @issues = current_user.issues.recent.first(20)
+      @issues = current_user.issues.more(session[:page])
       render file: 'issues/issues'
     else
       render json: { type: "fail", message: "failed to update issue tag!" }
@@ -49,7 +49,7 @@ class IssuesController < ApplicationController
   def destroy
     if @issue
       @issue.destroy 
-      @issues = current_user.issues.recent.first(20)
+      @issues = current_user.issues.more(session[:page])
       render file: 'issues/issues'
     else
       render json: { type: "fail", message: "failed to create issue tag!" } and return

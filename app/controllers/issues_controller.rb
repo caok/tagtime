@@ -6,8 +6,7 @@ class IssuesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    session[:page] = 1 
-    @issues = current_user.issues.recent.more(session[:page])
+    @issues = current_user.issues.recent
 
     respond_to do |f|
       f.html 
@@ -19,7 +18,7 @@ class IssuesController < ApplicationController
     session[:page] ||= 1 
     session[:page] += 1
     
-    @issues = current_user.issues.recent.more(session[:page])
+    @issues = current_user.issues.more(session[:page])
     render file: 'issues/issues'
   end
 

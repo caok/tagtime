@@ -16,7 +16,6 @@ class IssuesController < ApplicationController
   end 
 
   def load_more
-    session[:page] ||= 1 
     session[:page] += 1
     
     @issues = current_user.issues.more(session[:page])
@@ -62,6 +61,6 @@ class IssuesController < ApplicationController
   end
 
   def init_page
-    session[:page] = 1 
+    session[:page] = 0
   end
 end

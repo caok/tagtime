@@ -24,7 +24,7 @@ class Issue < ActiveRecord::Base
   scope :recent, -> { order(id: :desc).where(happened_at: (Date.today.beginning_of_week..Date.today.end_of_week)) }
 
   scope :more, -> (page) {
-    order(id: :desc).where(happened_at: (Date.today.end_of_week.weeks_ago(page)..Date.today.beginning_of_week))
+    order(id: :desc).where(happened_at: (Date.today.beginning_of_week.weeks_ago(page)..Date.today.end_of_week))
   }
 
   def user_name

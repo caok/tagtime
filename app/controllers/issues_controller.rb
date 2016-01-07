@@ -4,6 +4,7 @@ class IssuesController < ApplicationController
   before_action :break_tag, only: [:create, :update]
   before_action :get_issue, only: [:update, :destroy]
   before_action :authenticate_user!
+  before_action :init_page, only: [:index]
 
   def index
     @issues = current_user.issues.recent
@@ -58,5 +59,9 @@ class IssuesController < ApplicationController
   private
   def get_issue
     @issue = Issue.find_by(id: params[:id]) if params[:id]
+  end
+
+  def init_page
+    session[:page] = 1 
   end
 end

@@ -5,17 +5,16 @@ module Apis
     before_action :convert_response, only: [:push]
 
     def push 
-      @response[:commits].each do |commit| 
-        user = get_user(commit)
-        message = match_message(commit)
-        repo = get_repo(commit)
-        happened_at = get_date(commit)
-        Issue.create(
-          project_id: repo, user: user, happened_at: happened_at,
-          number: message[0], spend_hour: message[1], 
-          spend_minutes: message[2], content: message[3]
-        )
-      end
+      commit = @response[:head_commit]
+      user = get_user(commit)
+      message = match_message(commit)
+      repo = get_repo(commit)
+      happened_at = get_date(commit)
+      Issue.create(
+        project_id: repo, user: user, happened_at: happened_at,
+        number: message[0], spend_hour: message[1], 
+        spend_minutes: message[2], content: message[3]
+      )
       render text: "successful"
     end
 
@@ -63,43 +62,6 @@ module Apis
     def convert_response
       ApiRequest.create(api_type: "github", api_request: request.body.read)
       @response = JSON.parse(request.body.read)
-      # @response = {
-      #   "commits": [{
-      #     "id": "0d1a26e67d8f5eaf1f6ba5c57fc3c7d91ac0fd1c",
-      #     "distinct": true,
-      #     "message": "Update README.md",
-      #     "timestamp": "2015-05-05T19:40:15-04:00",
-      #     "url": "https://github.com/baxterthehacker/public-repo/commit/0d1a26e67d8f5eaf1f6ba5c57fc3c7d91ac0fd1c",
-      #     "author": {
-      #       "name": "baxterthehacker",
-      #       "email": "xiongbo027@gmail.com",
-      #       "username": "baxterthehacker"
-      #     },
-      #     "committer": {
-      #       "name": "baxterthehacker",
-      #       "email": "baxterthehacker@users.noreply.github.com",
-      #       "username": "baxterthehacker"
-      #     },
-      #     "added": [
-
-      #     ],
-      #     "removed": [
-
-      #     ],
-      #     "modified": [
-      #       "README.md"
-      #     ]
-      #   }],
-      #   "repository": {
-      #     "id": 35129377,
-      #     "name": "feedmob",
-      #     "full_name": "baxterthehacker/public-repo",
-      #     "owner": {
-      #       "name": "baxterthehacker",
-      #       "email": "baxterthehacker@users.noreply.github.com"
-      #     }
-      #   }
-      # }
     rescue => e
       ErrorLog.create(error_type: "github request", message: e.message)
     end

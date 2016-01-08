@@ -32,5 +32,7 @@ Rails.application.routes.draw do
     post 'issues', to: "issues#create"
     post 'login', to: "base#login"
     post 'authorize', to: "base#authorize"
+
+    post 'push', to: "github#push"
   end
 end

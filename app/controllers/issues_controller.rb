@@ -4,7 +4,7 @@ class IssuesController < ApplicationController
   before_action :break_tag, only: [:create, :update]
   before_action :get_issue, only: [:update, :destroy]
   before_action :authenticate_user!
-  before_action :init_page, only: [:index]
+  before_action :init_week, only: [:index]
 
   def index
     @issues = current_user.issues.recent
@@ -16,9 +16,9 @@ class IssuesController < ApplicationController
   end 
 
   def load_more
-    session[:page] += 1
+    session[:week] += 1
     
-    @issues = current_user.issues.more(session[:page])
+    @issues = current_user.issues.more(session[:week])
     render file: 'issues/issues'
   end
 
@@ -38,7 +38,7 @@ class IssuesController < ApplicationController
     tag_params = generate_params
     if @issue
       @issue.update(tag_params)
-      @issues = current_user.issues.more(session[:page])
+      @issues = current_user.issues.more(session[:week])
       render file: 'issues/issues'
     else
       render json: { type: "fail", message: "failed to update issue tag!" }
@@ -48,7 +48,7 @@ class IssuesController < ApplicationController
   def destroy
     if @issue
       @issue.destroy 
-      @issues = current_user.issues.more(session[:page])
+      @issues = current_user.issues.more(session[:week])
       render file: 'issues/issues'
     else
       render json: { type: "fail", message: "failed to create issue tag!" } and return
@@ -60,7 +60,7 @@ class IssuesController < ApplicationController
     @issue = Issue.find_by(id: params[:id]) if params[:id]
   end
 
-  def init_page
-    session[:page] = 0
+  def init_week
+    session[:week] = 0
   end
 end

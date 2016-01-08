@@ -1,12 +1,11 @@
 module Apis
-  class GithubController
-    include TagConcern
+  class GithubController < ApplicationController
     abstract!
     skip_before_action :verify_authenticity_token 
     before_action :convert_response, only: [:push]
 
     def push 
-      @response["commits"].each do |commit| 
+      @response[:commits].each do |commit| 
         user = get_user(commit)
         message = match_message(commit)
         repo = get_repo(commit)
@@ -17,25 +16,26 @@ module Apis
           spend_minutes: message[2], content: message[3]
         )
       end
+      render text: "successful"
     end
 
     private
     def get_user(commit) 
-      User.find_by(email: commit["author"]["email"])
+      User.find_by(email: commit[:author][:email])
     end 
 
     def get_repo(commit)
-      repo = commit["repository"]
-      repo_id = Project.find_by(name: repo["name"]).try(:id) 
+      repo = @response[:repository]
+      repo_id = Project.find_by(name: repo[:name]).try(:id) 
     end
 
     def get_date(commit)
-      timestamp = commit["timestamp"]
+      timestamp = commit[:timestamp]
       timestamp.to_date
     end
 
-    def match_message
-      message = commit["message"].strip
+    def match_message(commit)
+      message = commit[:message].strip
       return nil if message.blank?  
       content = message
 
@@ -61,35 +61,45 @@ module Apis
     end
 
     def convert_response
-      # ApiRequest.create(api_type: "github", api_request: request.body)
-      @response = {"commits": [
-        {
-          "id": "0d1a26e67d8f5eaf1f6ba5c57fc3c7d91ac0fd1c",
-          "distinct": true,
-          "message": "Update README.md",
-          "timestamp": "2015-05-05T19:40:15-04:00",
-          "url": "https://github.com/baxterthehacker/public-repo/commit/0d1a26e67d8f5eaf1f6ba5c57fc3c7d91ac0fd1c",
-          "author": {
-            "name": "baxterthehacker",
-            "email": "xiongbo027@gmail.com",
-            "username": "baxterthehacker"
-          },
-          "committer": {
-            "name": "baxterthehacker",
-            "email": "baxterthehacker@users.noreply.github.com",
-            "username": "baxterthehacker"
-          },
-          "added": [
+      ApiRequest.create(api_type: "github", api_request: request.body)
+      @response = JSON.parse(request.body)
+      # @response = {
+      #   "commits": [{
+      #     "id": "0d1a26e67d8f5eaf1f6ba5c57fc3c7d91ac0fd1c",
+      #     "distinct": true,
+      #     "message": "Update README.md",
+      #     "timestamp": "2015-05-05T19:40:15-04:00",
+      #     "url": "https://github.com/baxterthehacker/public-repo/commit/0d1a26e67d8f5eaf1f6ba5c57fc3c7d91ac0fd1c",
+      #     "author": {
+      #       "name": "baxterthehacker",
+      #       "email": "xiongbo027@gmail.com",
+      #       "username": "baxterthehacker"
+      #     },
+      #     "committer": {
+      #       "name": "baxterthehacker",
+      #       "email": "baxterthehacker@users.noreply.github.com",
+      #       "username": "baxterthehacker"
+      #     },
+      #     "added": [
 
-          ],
-          "removed": [
+      #     ],
+      #     "removed": [
 
-          ],
-          "modified": [
-            "README.md"
-          ]
-        }
-      ]}
+      #     ],
+      #     "modified": [
+      #       "README.md"
+      #     ]
+      #   }],
+      #   "repository": {
+      #     "id": 35129377,
+      #     "name": "feedmob",
+      #     "full_name": "baxterthehacker/public-repo",
+      #     "owner": {
+      #       "name": "baxterthehacker",
+      #       "email": "baxterthehacker@users.noreply.github.com"
+      #     }
+      #   }
+      # }
     rescue => e
       ErrorLog.create("github request", e.message)
     end

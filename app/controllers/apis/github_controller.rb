@@ -61,8 +61,8 @@ module Apis
     end
 
     def convert_response
-      ApiRequest.create(api_type: "github", api_request: request.body)
-      @response = JSON.parse(request.body)
+      ApiRequest.create(api_type: "github", api_request: request.body.read)
+      @response = JSON.parse(request.body.read)
       # @response = {
       #   "commits": [{
       #     "id": "0d1a26e67d8f5eaf1f6ba5c57fc3c7d91ac0fd1c",

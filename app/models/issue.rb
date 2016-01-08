@@ -38,10 +38,10 @@ class Issue < ActiveRecord::Base
   def body
     str = ""
     str += "@#{project_name} " if project_name.present?
-    str += "##{number} " if number > 0
+    str += "##{number} " if number.to_i > 0
     str += "#{content}"
-    str += " #{spend_hour}h" if spend_hour > 0
-    str += "#{spend_minutes}m" if spend_minutes > 0
+    str += " #{spend_hour}h" if spend_hour.to_i > 0
+    str += "#{spend_minutes}m" if spend_minutes.to_i > 0
 
     str
   end
@@ -49,7 +49,7 @@ class Issue < ActiveRecord::Base
   def body_without_time
     str = ""
     str += "@#{project_name} " if project_name.present?
-    str += "##{number}  " if number > 0
+    str += "##{number}  " if number.to_i > 0
     str += "#{content}"
 
     str
@@ -57,8 +57,8 @@ class Issue < ActiveRecord::Base
 
   def spend_time
     str = ''
-    str += "#{spend_hour}h " if spend_hour > 0
-    str += "#{spend_minutes}m" if spend_minutes > 0
+    str += "#{spend_hour}h " if spend_hour.to_i > 0
+    str += "#{spend_minutes}m" if spend_minutes.to_i > 0
     str = '0' if str.blank?
 
     str

@@ -1,5 +1,6 @@
 ActiveAdmin.register Issue do
   menu :priority => 4
+  permit_params :number, :spend_hour, :spend_minutes, :content, :project_id, :user_id, :happened_at, :original_content
 
   index do
     selectable_column

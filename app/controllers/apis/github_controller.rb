@@ -101,7 +101,7 @@ module Apis
       #   }
       # }
     rescue => e
-      ErrorLog.create("github request", e.message)
+      ErrorLog.create(error_type: "github request", message: e.message)
     end
   end
 end

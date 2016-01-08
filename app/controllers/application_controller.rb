@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   def error_occurred(e)
-    ErrorLog.create("system error", e.message)
+    ErrorLog.create(error_type: "system error", message: e.message)
     return
   end
 end

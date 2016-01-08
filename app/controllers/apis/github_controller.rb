@@ -8,7 +8,7 @@ module Apis
       commit = @response[:head_commit]
       user = get_user(commit)
       message = match_message(commit)
-      repo = get_repo(commit)
+      repo = get_repo
       happened_at = get_date(commit)
       Issue.create(
         project_id: repo, user: user, happened_at: happened_at,
@@ -23,7 +23,7 @@ module Apis
       User.find_by(email: commit[:author][:email])
     end 
 
-    def get_repo(commit)
+    def get_repo
       repo = @response[:repository]
       repo_id = Project.find_by(name: repo[:name]).try(:id) 
     end
@@ -61,7 +61,7 @@ module Apis
 
     def convert_response
       ApiRequest.create(api_type: "github", api_request: request.body.read)
-      @response = JSON.parse(request.body.read)
+      @response = request.body.read
     rescue => e
       ErrorLog.create(error_type: "github request", message: e.message)
     end

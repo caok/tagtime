@@ -59,4 +59,10 @@ class Project < ActiveRecord::Base
   def downcase_name
     self.name = name.downcase
   end
+
+  def filter_issues(user_ids, start_date, end_date)
+    condition = issues.where(happened_at: start_date..end_date)
+    condition = condition.where(user_id: user_ids) if user_ids.present?
+    condition
+  end
 end

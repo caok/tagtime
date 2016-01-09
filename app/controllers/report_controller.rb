@@ -9,8 +9,17 @@ class ReportController < ApplicationController
     if @project_id.present?
       get_spend_hour_by_users(user_ids, @project_id, *split_date_range)
     else
-      get_spend_hour_by_project(user_ids, @project_id, *split_date_range)
+      get_spend_hour_by_projects(user_ids, *split_date_range)
     end
+  end
+
+  def detail
+    @project = current_user.projects.find_by(id: params[:project])
+    return redirect_to report_summary_path if @project.blank?
+
+    user_ids = params[:users].present? ? params[:users] : @project.users.map(&:id)
+    get_spend_hour_by_date(user_ids, @project.id, *split_date_range)
+    @issues = @project.filter_issues(user_ids, *split_date_range).order(happened_at: :desc).page params[:page]
   end
 
   private
@@ -44,19 +53,20 @@ class ReportController < ApplicationController
     end
   end
 
-  def get_spend_hour_by_project(user_ids, project_id=nil, start_date, end_date)
+  def get_spend_hour_by_projects(user_ids, start_date, end_date)
     condition = Issue.where(happened_at: start_date..end_date)
     condition = condition.where(user_id: user_ids) if user_ids.present?
-    condition = condition.where(project_id: project_id) if project_id.present?
     spend_hour_hash = condition.group(:project_id).sum(:spend_hour)
     spend_minute_hash = condition.group(:project_id).sum(:spend_minutes)
 
     @reports = []
+    @projects_hash = []
     condition.select(:project_id).distinct.map(&:project_id).each do |project_id|
       project = current_user.projects.find_by(id: project_id)
       if project.present?
         hours = (spend_hour_hash[project_id].to_f + spend_minute_hash[project_id].to_f / 60).round(2)
         @reports << [project.name, hours]
+        @projects_hash << {name: project.name, id: project.id}
       end
     end
   end

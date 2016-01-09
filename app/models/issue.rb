@@ -28,7 +28,7 @@ class Issue < ActiveRecord::Base
   }
 
   def user_name
-    user.try(:email)
+    user.try(:name)
   end
 
   def project_name
@@ -49,6 +49,14 @@ class Issue < ActiveRecord::Base
   def body_without_time
     str = ""
     str += "@#{project_name} " if project_name.present?
+    str += "##{number}  " if number.to_i > 0
+    str += "#{content}"
+
+    str
+  end
+
+  def body_without_time_and_project
+    str = ""
     str += "##{number}  " if number.to_i > 0
     str += "#{content}"
 

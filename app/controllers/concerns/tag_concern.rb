@@ -36,11 +36,9 @@ module TagConcern
     project = project.gsub(/[@ ;,，。]/, '').try(:downcase)
     project_id = Project.find_by(name: project).try(:id)
 
-    if hours != hours.to_i
-      minutes = (minutes + (hours - hours.to_i)*60).to_i
-      hours = hours.to_i + (minutes/60).to_i
-      minutes = (minutes%60).to_i
-    end 
+    minutes = (minutes + (hours - hours.to_i)*60).to_i if hours != hours.to_i
+    hours = hours.to_i + (minutes/60).to_i
+    minutes = (minutes%60).to_i
 
     @tags = [project_id, number, hours.to_i, minutes, date, content]
   end

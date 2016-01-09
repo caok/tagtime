@@ -55,7 +55,7 @@ function init_tag_content(){
         var content = title.match(/^(.+)\ \·\ Issue/)[1];
         if (projects.indexOf(project) >= 0){
           console.log(project);
-          str = '@' + project + ' ' + num + ' ' + content + ' ';
+          str = '@' + project + ' #' + num + ' ' + content + ' ';
         }
       }
     }

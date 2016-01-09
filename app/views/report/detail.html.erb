@@ -1,0 +1,56 @@
+<h1>Detail Report for <%= @project.name %></h1>
+
+<%= form_tag report_detail_path(@project.id), method: :get, class: 'filter' do %>
+  <%= select_tag "users", options_from_collection_for_select(@project.users, :id, :name), multiple: true, include_blank: 'Select User' %>
+  <%= text_field_tag "date_range", value: @date_range %>
+  <%= submit_tag 'Search' %>
+  <%= link_to 'Clear', report_detail_path(@project.id), class: 'button-warning' %>
+<% end %>
+
+<%= column_chart @report_by_date, library: {
+  tooltip: {
+    pointFormat: "Hours: <b>{point.y}</b>h<br/>",
+    valueDecimals: 2
+  }, 
+  yAxis: {
+    title: { text: "Hours" },
+    labels: { format: '{value}h' }
+  }, 
+  xAxis: {
+    title: { text: "Date" },
+  },
+} %>
+
+<hr>
+<table>
+  <thead>
+    <tr>
+      <td>Time Entry</td>
+      <td>User</td>
+      <td>Duration</td>
+      <td>Happened At</td>
+    </tr>
+  </thead>
+  <tbody>
+    <% @issues.each do |issue| %>
+      <tr>
+        <td><%= issue.body_without_time_and_project %></td>
+        <td><%= issue.user_name %></td>
+        <td><%= issue.spend_time %></td>
+        <td><%= issue.happened_at %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate @issues %>
+
+<script>
+  $(document).ready(function(){
+    $('select#project').select2({placeholder: 'Select a project', allowClear: true});
+    $('select#users').select2({
+      placeholder: 'Select users',
+      allowClear: true
+    });
+  });
+</script>

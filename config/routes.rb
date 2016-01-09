@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
-  get 'report/summary'
+  root "issues#index"
 
   devise_for :users, controllers: {
     sessions: 'users/sessions',
@@ -9,7 +9,6 @@ Rails.application.routes.draw do
     registrations: 'users/registrations',
     confirmations: 'users/confirmations'
   }
-  root "issues#index"
 
   get 'mine/profile'
   resources :issues do 
@@ -23,6 +22,11 @@ Rails.application.routes.draw do
     post 'revoke_manager_right', on: :member
     post 'give_manager_right', on: :member
     get 'users', on: :collection
+  end
+
+  controller :report do
+    get 'report/summary', action: :summary, as: :report_summary
+    get 'report/:project/detail', action: :detail, as: :report_detail
   end
 
   namespace :apis do 

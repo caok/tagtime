@@ -1,4 +1,4 @@
-<h1>Report</h1>
+<h1>Summary Report</h1>
 
 <%= form_tag report_summary_path, method: :get, class: 'filter' do %>
   <%= select_tag "project", options_from_collection_for_select(current_user.projects, :id, :name, @project_id), include_blank: 'Select Project' %>
@@ -26,9 +26,14 @@
 
 <div class="pie_report">
   <table>
-    <% @reports.each do |report| %>
+    <% @reports.each_with_index do |report, index| %>
       <tr>
-        <td><%= report[0] %></td>
+        <% if @projects_hash.present? %>
+          <% project_id = @projects_hash[index][:id] rescue 0 %>
+          <td><%= link_to report[0], report_detail_path(project_id) %></td>
+        <% else %>
+          <td><%= report[0] %></td>
+        <% end %>
         <td><%= report[1] %>h</td>
       </tr>
     <% end %>

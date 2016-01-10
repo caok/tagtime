@@ -19,7 +19,7 @@ module TagConcern
     date = tag.match(/[ ;,.，。](\w+\/\w+)[ ;,.，。]?/)
     content = tag
 
-    number = tag.match(/\#\d+[ ;,.，。]?/).to_s.strip
+    number = tag.match(/[#＃]\d+[ ;,.，。]?/).to_s.strip
     hours = tag.match(/[\d.]+(hrs|hr|h|H)+/).to_s.strip
     minutes = tag.match(/[\d.]+(mins|min|m|M)+/).to_s.strip 
 
@@ -29,7 +29,7 @@ module TagConcern
     content = content.strip
     date = match_date(date)
 
-    number = number.gsub(/[# ;,，。]/, '')
+    number = number.gsub(/[#＃ ;,，。]/, '')
     hours = hours.gsub(/(hrs|hr|h|H)/, '').to_f
     minutes = minutes.gsub(/(mins|min|m|M)/, '').to_i
 

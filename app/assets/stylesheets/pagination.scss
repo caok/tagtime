@@ -59,5 +59,8 @@
         background: $pagination-background;
       }
     }
+    li.pagecurrent a {
+      background: #ddd !important;
+    }
   }
 }

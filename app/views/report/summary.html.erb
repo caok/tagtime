@@ -2,7 +2,7 @@
 
 <%= form_tag report_summary_path, method: :get, class: 'filter' do %>
   <%= select_tag "project", options_from_collection_for_select(current_user.projects, :id, :name, @project_id), include_blank: 'Select Project' %>
-  <%= select_tag "users", options_from_collection_for_select([], :id, :name), multiple: true, include_blank: 'Select User' %>
+  <%= select_tag "users", options_from_collection_for_select(@project.try(:users) || [], :id, :name, params[:users]), multiple: true, include_blank: 'Select User' %>
   <%= text_field_tag "date_range", value: @date_range %>
   <%= submit_tag 'Search' %>
   <%= link_to 'Clear', report_summary_path, class: 'button-warning' %>

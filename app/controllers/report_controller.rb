@@ -4,8 +4,9 @@ class ReportController < ApplicationController
 
   def summary
     @project_id = params[:project]
-    user_ids = params[:project].present? ? params[:users] : [current_user.id]
+    user_ids = @project_id.present? ? params[:users] : [current_user.id]
     get_spend_hour_by_date(user_ids, @project_id, *split_date_range)
+    @project = Project.find_by(id: @project_id)
     if @project_id.present?
       get_spend_hour_by_users(user_ids, @project_id, *split_date_range)
     else

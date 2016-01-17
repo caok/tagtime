@@ -16,7 +16,11 @@ var TagIssues = (function($){
     chrome.runtime.sendMessage(project, function(response){
       console.log(response);
       cache.datas = JSON.parse(response);
-      update_issues();
+      if (document.title.indexOf('Issues ·') >= 0){
+        update_issues();
+      } else {
+        update_issue_for_detail_page();
+      };
     });
   }; 
 
@@ -39,6 +43,13 @@ var TagIssues = (function($){
         $('<span />').text(time).addClass("tag_time").appendTo($(this)); 
       };
     });
+  };
+
+  var update_issue_for_detail_page = function(){
+    var time = get_time_of_issue($("span.gh-header-number").text());
+    if (time && time != ""){
+      $('<span />').text(time).addClass("tag_time").appendTo($(".flex-table-item-primary"));
+    }
   };
 
   var init = function(){

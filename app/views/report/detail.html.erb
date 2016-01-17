@@ -2,7 +2,7 @@
 
 <%= form_tag report_detail_path(@project.id), method: :get, class: 'filter' do %>
   <%= select_tag "users", options_from_collection_for_select(@project.users, :id, :name, params[:users]), multiple: true, include_blank: 'Select User' %>
-  <%= text_field_tag "date_range", value: @date_range %>
+  <%= text_field_tag "date_range", @date_range %>
   <%= submit_tag 'Search' %>
   <%= link_to 'Clear', report_detail_path(@project.id), class: 'button-warning' %>
 <% end %>

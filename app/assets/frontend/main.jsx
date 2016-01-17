@@ -32,9 +32,16 @@ class Main extends React.Component {
       beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
       url: '/issues/' + tagId
     }).success((res) => {
-      console.log(res);
+      let issueList = self.state.issueList;
       if (res.type == 'success'){
-        self.setState({ issueList: res.list });
+        //self.setState({ issueList: res.list });
+        for (var i=0; i<issueList.length; i++){
+          if (issueList[i].id == tagId) {
+            issueList.splice(i,1);
+            break;
+          }
+        };
+        self.setState({ issueList: issueList });
       } else {
         console.log(res.message);
       } 
@@ -43,16 +50,21 @@ class Main extends React.Component {
 
   updateIssue(tagId, tagValue) {
     let self = this;
-
     $.ajax({ 
       type: 'PATCH',
       beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
       url: '/issues/' + tagId,
       data: {tag: tagValue}
     }).success((res) => {
-      console.log(res);
+      let issueList = self.state.issueList;
       if (res.type == 'success'){
-        self.setState({ issueList: res.list });
+        for (var i=0; i<issueList.length; i++){
+          if (issueList[i].id == tagId) {
+            issueList[i] = res.data;
+            break;
+          }
+        };
+        self.setState({ issueList: issueList });
       } else {
         console.log(res.message);
       } 

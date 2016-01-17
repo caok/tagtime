@@ -35,11 +35,9 @@ class IssuesController < ApplicationController
   end
 
   def update
-    tag_params = generate_params
-    if @issue
-      @issue.update(tag_params)
-      @issues = current_user.issues.more(session[:week])
-      render file: 'issues/issues'
+    if @issue.update(generate_params)
+      data = {id: @issue.id, name: @issue.user_name, body: @issue.body_without_time, time: @issue.spend_time, happenedAt: @issue.happened_at.strftime("%m/%d"), content: @issue.content, project_name: @issue.project_name, number: @issue.number}
+      render json: { type: "success", message: "update issue tag successful!", data: data } and return
     else
       render json: { type: "fail", message: "failed to update issue tag!" }
     end

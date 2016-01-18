@@ -14,7 +14,17 @@ export default class IssueList extends React.Component {
   }
 
   render() {
-    let issues = this.props.issues.map(issue => <Issue key={issue.id} {...issue} deleteIssue={this.deleteIssue.bind(this)} updateIssue={this.updateIssue.bind(this)} />);
+//let issues = this.props.issues.map(issue => <Issue key={issue.id} {...issue} deleteIssue={this.deleteIssue.bind(this)} updateIssue={this.updateIssue.bind(this)} />);
+    let self = this;
+    let date = '';
+    let issues = [];
+    this.props.issues.map(function(issue){
+      if (date != issue.happenedAt){
+        date = issue.happenedAt;
+        issues.push(<li className='date' key={date}>{date}</li>)
+      }
+      issues.push(<Issue key={issue.id} {...issue} deleteIssue={self.deleteIssue.bind(self)} updateIssue={self.updateIssue.bind(self)} />)
+    })
 
     return (
       <div className='issue_list'> 

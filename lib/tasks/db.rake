@@ -1,27 +1,39 @@
-namespace :import do 
-  desc "import form toggle"
-  task :toggle => :environment do
-    require 'csv'
-    count = 0
-    CSV.foreach("./Toggl_time.csv") do |row|
-      user = User.find_by(name: row[0].try(:downcase))
-      project = Project.find_by(name: row[3])
-      num = row[5].match(/\#(\d+)[ ;,.，。]?/)[1] rescue 0
-      content = num.to_i > 0 ? row[5].gsub("##{num}", "") : row[5]
-      if user.present?
-        Issue.create(user_id: user.try(:id),
-                     project_id: project.try(:id),
-                     happened_at: row[7],
-                     spend_hour: row[11].split(":").first.to_i,
-                     spend_minutes: row[11].split(":").second.to_i,
-                     content: content,
-                     number: num.to_i,
-                     original_content: row[5]
-                    )
-        count += 1
-        puts count
+namespace :db do 
+  desc "Dumps the database to backups"
+  task :dump => :environment do
+    cmd = nil
+    with_config do |app, host, db, user|
+      if user.blank?
+        cmd = "pg_dump -h #{host} -p 5432 -d #{db} > #{Rails.root}/db/backups/#{Time.now.strftime("%Y%m%d%H%M%S")}_#{db}.psql"
+      else
+        cmd = "pg_dump -h #{host} -p 5432 -U #{user} -d #{db} > #{Rails.root}/db/backups/#{Time.now.strftime("%Y%m%d%H%M%S")}_#{db}.psql"
       end
-      puts "import #{count}"
     end
+    puts cmd
+    exec cmd
+  end
+
+  desc "Restores the database from backups, eg: rake 'db:restore[20151120095657]'"
+  task :restore, [:date] => :environment do |task,args|
+    if args.date.present?
+      cmd = nil
+      with_config do |app, host, db, user|
+        cmd = "psql -h #{host} -p 5432 -d #{db} -f #{Rails.root}/db/backups/#{args.date}_#{db}.psql"
+      end
+      Rake::Task["db:drop"].invoke
+      Rake::Task["db:create"].invoke
+      puts cmd
+      exec cmd
+    else
+      puts 'Please pass a date to the task'
+    end
+  end
+
+  private
+  def with_config
+    yield Rails.application.class.parent_name.underscore,
+      ActiveRecord::Base.connection_config[:host],
+      ActiveRecord::Base.connection_config[:database],
+      ActiveRecord::Base.connection_config[:username]
   end
 end

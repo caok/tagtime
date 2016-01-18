@@ -48,3 +48,5 @@ app/assets/javascripts/bundle.js
 app/assets/javascripts/bundle.js.map
 
 extensions/chrome.*
+
+db/backups

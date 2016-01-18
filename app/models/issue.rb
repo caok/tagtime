@@ -21,10 +21,10 @@ class Issue < ActiveRecord::Base
 
   PAGE_COUNT = 10
 
-  scope :recent, -> { order(id: :desc).where(happened_at: (Date.today.beginning_of_week..Date.today.end_of_week)) }
+  scope :recent, -> { order(happened_at: :desc, project_id: :desc).where(happened_at: ((Date.today-2.days).beginning_of_week..Date.today.end_of_week)) }
 
   scope :more, -> (page) {
-    order(id: :desc).where(happened_at: (Date.today.beginning_of_week.weeks_ago(page)..Date.today.end_of_week))
+    order(happened_at: :desc, project_id: :desc).where(happened_at: ((Date.today-2.days).beginning_of_week.weeks_ago(page)..Date.today.end_of_week))
   }
 
   def user_name

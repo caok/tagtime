@@ -28,6 +28,10 @@ class User < ActiveRecord::Base
   has_many :participations
   has_many :projects, through: :participations
 
+  def more_dates_for_issues(start)
+    issues.where("happened_at < ?", 6.days.ago).order(happened_at: :desc).select(:happened_at).distinct.offset(start).limit(7).map(&:happened_at)
+  end
+
   def ensure_token
     self.token = generate_token if token.blank?
   end

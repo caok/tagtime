@@ -19,13 +19,9 @@ class Issue < ActiveRecord::Base
   belongs_to :user
   belongs_to :project
 
-  PAGE_COUNT = 10
-
-  scope :recent, -> { order(happened_at: :desc, project_id: :desc).where(happened_at: ((Date.today-2.days).beginning_of_week..Date.today.end_of_week)) }
-
-  scope :more, -> (page) {
-    order(happened_at: :desc, project_id: :desc).where(happened_at: ((Date.today-2.days).beginning_of_week.weeks_ago(page)..Date.today.end_of_week))
-  }
+  scope :order_by_date_and_project, -> { order(happened_at: :desc, project_id: :desc).includes(:project) }
+  scope :recent, -> { order_by_date_and_project.where(happened_at: (6.days.ago..Date.today)) }
+  scope :more, -> (dates) { where(happened_at: dates).order_by_date_and_project }
 
   def user_name
     user.try(:name)

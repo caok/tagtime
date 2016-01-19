@@ -73,6 +73,7 @@ class Main extends React.Component {
 
   loadMore() {
     let self = this;
+    let newIssueList = self.state.issueList;
 
     $.ajax({ 
       type: 'GET',
@@ -80,7 +81,8 @@ class Main extends React.Component {
       url: '/issues/load_more'
     }).success((res) => {
       if (res.type == 'success'){
-        self.setState({ issueList: res.list });
+        newIssueList.push(...res.list);
+        self.setState({ issueList: newIssueList });
       } else {
         console.log(res.message);
       } 

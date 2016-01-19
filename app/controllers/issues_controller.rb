@@ -18,7 +18,9 @@ class IssuesController < ApplicationController
   def load_more
     session[:week] += 1
     
-    @issues = current_user.issues.more(session[:week])
+    start = (session[:week] - 1) * 7
+    dates = current_user.more_dates_for_issues(start)
+    @issues = current_user.issues.more(dates)
     render file: 'issues/issues'
   end
 

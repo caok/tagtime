@@ -30,16 +30,16 @@ class IssuesController < ApplicationController
 
     if issue.save
       data = {id: issue.id, name: issue.user_name, body: issue.body_without_time, time: issue.spend_time, happenedAt: issue.happened_at.strftime("%m/%d"), content: issue.content, project_name: issue.project_name, number: issue.number}
-      render json: { type: "success", message: "created new issue tag!", data: data } and return
+      render json: { type: "success", message: "created new issue tag!", data: data }
     else
-      render json: { type: "fail", message: "failed to create issue tag!" } and return
+      render json: { type: "fail", message: "failed to create issue tag!" }
     end
   end
 
   def update
     if @issue.update(generate_params)
       data = {id: @issue.id, name: @issue.user_name, body: @issue.body_without_time, time: @issue.spend_time, happenedAt: @issue.happened_at.strftime("%m/%d"), content: @issue.content, project_name: @issue.project_name, number: @issue.number}
-      render json: { type: "success", message: "update issue tag successful!", data: data } and return
+      render json: { type: "success", message: "update issue tag successful!", data: data }
     else
       render json: { type: "fail", message: "failed to update issue tag!" }
     end
@@ -49,9 +49,9 @@ class IssuesController < ApplicationController
     if @issue
       @issue.destroy 
       @issues = current_user.issues.more(session[:week])
-      render file: 'issues/issues'
+      render json: { type: 'success', message: "destroy issue tag!" }
     else
-      render json: { type: "fail", message: "failed to create issue tag!" } and return
+      render json: { type: "fail", message: "failed to create issue tag!" }
     end
   end
 

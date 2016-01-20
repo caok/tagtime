@@ -3,9 +3,9 @@ export default class Issue extends React.Component {
     return (
       <li>
         <span className='body' onClick={this.editIssue.bind(this)}>{this.props.body}</span>
+        <span className='operation' onClick={this.deleteIssue.bind(this, this.props.id)}><i className="fa fa-trash-o"></i></span>
         <span className='time'>{this.props.happenedAt}</span>
         <span className='time'>{this.props.time}</span>
-        <span className='operation' onClick={this.deleteIssue.bind(this, this.props.id)}> [delete]</span>
         <input type='text' className="issue_editor" onKeyDown={this.updateIssue.bind(this, this.props.id)} onBlur={this.hiddenEditor} style={{display: 'none'}} />
       </li>
     );

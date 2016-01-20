@@ -28,6 +28,14 @@
           float: right;
           margin: 0 20px;
         }
+        span.operation {
+          cursor: pointer;
+          float: right;
+          color: #888;
+          &:hover {
+            color: black;
+          }
+        }
       }
       li.date {
         border: none;

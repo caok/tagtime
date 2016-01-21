@@ -12,6 +12,7 @@ export default class IssueBox extends React.Component {
           <button type='submit'>submit</button>
         </form>
         <div className='clear'></div>
+        <p id='hint'>hint: @project #number content 1h20m 12/30</p>
       </div>
     );
   }

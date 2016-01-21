@@ -28,7 +28,6 @@ export default class IssueList extends React.Component {
 
     return (
       <div className='issue_list'> 
-        <h2></h2>
         <ul>
           {issues}
         </ul>
